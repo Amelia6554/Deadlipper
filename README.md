@@ -1,6 +1,4 @@
 # Deadlipper
-## Note
-This project is a work in progress
 
 **Work in Progress**
 
