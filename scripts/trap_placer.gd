@@ -1,8 +1,12 @@
 extends Node2D
 
 @export var player_money: int = 500
-@export var spikes_scene: PackedScene
 @onready var preview_sprite: Sprite2D = $PreviewSprite
+@export var money_label: Label
+
+#---traps-------------------------------
+@export var spikes_scene: PackedScene
+@export var trampoline_scene: PackedScene
 
 # Zmienna przechowująca scenę aktualnie wybranej pułapki
 var selected_trap_scene: PackedScene = null
@@ -17,6 +21,14 @@ func _process(_delta):
 		return
 
 	update_preview()
+	
+func _ready():
+	# Wywołujemy aktualizację napisu na samym starcie
+	update_money_display()
+
+func update_money_display():
+	if money_label != null:
+		money_label.text = "Kasa: " + str(player_money) + "$"
 	
 func update_preview():
 	preview_sprite.visible = true
@@ -54,19 +66,6 @@ func _unhandled_input(event):
 		if selected_trap_scene != null:
 			place_trap(get_global_mouse_position())
 
-# Funkcja wywoływana przez przycisk w GUI
-func select_spikes():
-	if not can_place_traps: return
-	selected_trap_scene = spikes_scene
-	print("Wybrano Kolce do postawienia!")
-	
-	# Ustawiamy teksturę podglądu na teksturę kolców
-	var temp_instance = spikes_scene.instantiate()
-	# Szukamy Sprite2D wewnątrz sceny kolców (zakładam, że tam jest)
-	var spike_sprite = temp_instance.get_node("Sprite2D") as Sprite2D
-	preview_sprite.texture = spike_sprite.texture
-	temp_instance.queue_free()
-
 func place_trap(click_position: Vector2):
 	# 1. Najpierw sprawdzamy, CO jest pod myszką (Zanim wydamy pieniądze!)
 	var space_state = get_world_2d().direct_space_state
@@ -89,6 +88,7 @@ func place_trap(click_position: Vector2):
 	if player_money >= trap_instance.cost:
 		# Pobieramy opłatę
 		player_money -= trap_instance.cost
+		update_money_display()
 		print("Kupiono pułapkę! Zostało pieniędzy: ", player_money)
 		
 		if result:
@@ -113,3 +113,27 @@ func place_trap(click_position: Vector2):
 
 func _on_btn_spikes_pressed() -> void:
 	pass # Replace with function body.
+	
+#------------------Traps--------------------
+
+# Funkcja wywoływana przez przycisk w GUI
+func select_spikes():
+	if not can_place_traps: return
+	selected_trap_scene = spikes_scene
+	print("Wybrano Kolce do postawienia!")
+	
+	# Ustawiamy teksturę podglądu na teksturę kolców
+	var temp_instance = spikes_scene.instantiate()
+	# Szukamy Sprite2D wewnątrz sceny kolców (zakładam, że tam jest)
+	var spike_sprite = temp_instance.get_node("Sprite2D") as Sprite2D
+	preview_sprite.texture = spike_sprite.texture
+	temp_instance.queue_free()
+	
+func select_trampoline():
+	if not can_place_traps: return
+	selected_trap_scene = trampoline_scene
+	
+	# Aktualizujemy ikonkę podglądu
+	var temp = trampoline_scene.instantiate()
+	preview_sprite.texture = temp.get_node("Sprite2D").texture
+	temp.queue_free()

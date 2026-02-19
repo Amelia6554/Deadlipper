@@ -13,6 +13,7 @@ extends Node
 func _ready():
 	# Podłączamy sygnał wciśnięcia przycisku do funkcji
 	btn_start.pressed.connect(_on_start_pressed)
+	
 
 func _on_start_pressed():
 	print("Gra wystartowała!")
@@ -38,7 +39,13 @@ func _on_start_pressed():
 	get_parent().add_child(player)
 	
 	if camera:
-		camera.target = player
+		# Wyłączamy na chwilę możliwość Edge Scrollingu (jeśli chcesz)
+		camera.target = player # Ustawiamy gracza jako cel
+		camera.locked = true
 		
-	if level_ui:
-		level_ui.setup_player(player)
+		var camera_tween = create_tween()
+		# Ustawiamy przejście kamery do punktu (0,0) w 0.5 sekundy
+		camera_tween.tween_property(camera, "global_position", Vector2(0, 0), 0.5).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+
+		if level_ui:
+			level_ui.setup_player(player)

@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://dco1im4p70g0l"]
+
+[ext_resource type="Script" uid="uid://b5oknu23gr105" path="res://scripts/trampoline_trap.gd" id="1_4kbxh"]
+[ext_resource type="Texture2D" uid="uid://yoego7e46ftc" path="res://assets/3 Objects/Bushes/3.png" id="1_unobl"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4kbxh"]
+size = Vector2(28, 10)
+
+[node name="Trampoline_trap" type="Area2D" unique_id=580154784]
+script = ExtResource("1_4kbxh")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=52209042]
+texture = ExtResource("1_unobl")
+offset = Vector2(0, -8)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1516041431]
+position = Vector2(0, -5)
+shape = SubResource("RectangleShape2D_4kbxh")

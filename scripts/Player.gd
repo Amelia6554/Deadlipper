@@ -43,7 +43,20 @@ func take_damage(amount: int):
 	hp -= amount
 	print("Piłka obrywa za: ", amount, " | Zostało HP: ", hp)
 	
+	# --- EFEKT KOLORU ---
+	# Tworzymy tween (animator)
+	var tween = create_tween()
+	# 1. Błyskawicznie zmień kolor na czerwony
+	$AnimatedSprite2D.modulate = Color.RED 
+	# 2. W ciągu 0.2 sekundy wróć do białego (czyli naturalnego koloru)
+	tween.tween_property($AnimatedSprite2D, "modulate", Color.WHITE, 0.2)
+	# --------------------
+
 	if hp <= 0:
-		hp = 0
-		print("PIŁKA ZNISZCZONA! KONIEC GRY!")
-		queue_free()
+		die()
+
+func die():
+	hp = 0
+	print("PIŁKA ZNISZCZONA!")
+	# Tutaj warto dodać np. efekt wybuchu przed usunięciem
+	queue_free()
