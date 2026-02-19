@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://bu7wqo17chddi" path="res://scripts/player.gd" id="1_g2els"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_3vyb7"]
-bounce = 0.6
+bounce = 0.4
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qhqgy"]
 atlas = ExtResource("1_3vyb7")
@@ -25,7 +25,6 @@ animations = [{
 radius = 6.0
 
 [node name="Player" type="RigidBody2D" unique_id=1668177995]
-mass = 0.6
 physics_material_override = SubResource("PhysicsMaterial_3vyb7")
 script = ExtResource("1_g2els")
 

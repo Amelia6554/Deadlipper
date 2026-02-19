@@ -1,6 +1,6 @@
 extends Node2D
 
-@export var player_money: int = 500
+@export var player_money: int = 10000
 @onready var preview_sprite: Sprite2D = $PreviewSprite
 @export var money_label: Label
 

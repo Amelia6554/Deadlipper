@@ -1,18 +1,33 @@
 extends Camera2D
 
 @export var scroll_speed: float = 200.0 # Prędkość przesuwania
+@export var look_ahead_distance: float = 0.2 # Jak bardzo wyprzedzać (ułamek sekundy)
+@export var max_look_ahead: float = 300.0    # Maksymalne wychylenie w pikselach
 var margin_percent: float = 1.0 / 15.0 # Twój margines 1/15
 
-var target: Node2D = null
+var target: RigidBody2D = null
 var follow: bool = false
 var locked: bool = false
 
-func _process(delta):
+func _process(delta: float):
 	# 1. Jeśli kamera jest zablokowana (po kliknięciu Start)
 	if locked:
 		if follow and target != null:
-			# Jeśli już puszczono piłkę - śledź ją
-			global_position = target.global_position
+			# 1. Pobieramy prędkość piłki
+			var velocity = target.linear_velocity
+			
+			# 2. Obliczamy przesunięcie (offset) na podstawie prędkości
+			# Im szybciej spada (velocity.y), tym niżej patrzy kamera
+			var target_offset = velocity * look_ahead_distance
+			
+			# 3. Ograniczamy maksymalne wychylenie, żeby kamera nie oszalała
+			target_offset.x = clamp(target_offset.x, -max_look_ahead, max_look_ahead)
+			target_offset.y = clamp(target_offset.y, -max_look_ahead, max_look_ahead)
+			
+			# 4. Płynnie przesuwamy kamerę do punktu: pozycja piłki + przesunięcie
+			# Używamy lerp, żeby ruch był miękki dla oka
+			var target_pos = target.global_position + target_offset
+			global_position = global_position.lerp(target_pos, 10.0 * delta)
 		else:
 			# Jeśli jeszcze nie puszczono piłki - stój w miejscu (np. na 0,0)
 			pass
