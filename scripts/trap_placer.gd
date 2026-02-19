@@ -22,6 +22,19 @@ func select_spikes():
 	print("Wybrano Kolce do postawienia!")
 
 func place_trap(click_position: Vector2):
+	# 1. Najpierw sprawdzamy, CO jest pod myszką (Zanim wydamy pieniądze!)
+	var space_state = get_world_2d().direct_space_state
+	var query = PhysicsRayQueryParameters2D.create(click_position - Vector2(0, 100), click_position + Vector2(0, 100))
+	
+	# Opcjonalnie: query.collision_mask = 1  <-- Tutaj możesz podać numer warstwy Twojej mapy
+	
+	var result = space_state.intersect_ray(query)
+	
+	# 2. JEŚLI NIC NIE TRAFILIŚMY (powietrze), przerywamy funkcję
+	if not result:
+		print("Nie można postawić pułapki w powietrzu!")
+		return
+	
 	# 1. Tworzymy tymczasową instancję, żeby odczytać jej koszt
 	var trap_instance = selected_trap_scene.instantiate() as Trap
 	
@@ -31,12 +44,20 @@ func place_trap(click_position: Vector2):
 		player_money -= trap_instance.cost
 		print("Kupiono pułapkę! Zostało pieniędzy: ", player_money)
 		
-		# 3. Ustawiamy pozycję na miejsce kliknięcia i dodajemy do mapy
-		trap_instance.global_position = click_position
-		add_child(trap_instance)
-		
-		# (Opcjonalnie) Odznaczamy pułapkę, żeby nie stawiać jej w nieskończoność:
-		# selected_trap_scene = null 
+		if result:
+			# Jeśli promień w coś trafił (np. w podłoże), przyklejamy pułapkę 
+			# do punktu styku
+			trap_instance.global_position = result.position
+			
+			var surface_normal = result.normal
+			# Obracamy pułapkę! result.normal.angle() podaje kąt pochylenia, 
+			# a dodanie PI / 2.0 (czyli 90 stopni) sprawia, że pułapka stoi 
+			# prosto względem podłoża.
+			trap_instance.rotation = surface_normal.angle() + (PI / 2.0)
+			add_child(trap_instance)
+		else:
+			trap_instance.queue_free()
+			
 	else:
 		# Jeśli nas nie stać, usuwamy stworzoną przed chwilą instancję
 		print("Za mało pieniędzy! Brakuje: ", trap_instance.cost - player_money)
