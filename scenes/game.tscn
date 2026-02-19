@@ -1,11 +1,13 @@
 [gd_scene format=3 uid="uid://ci4e270s3iytp"]
 
+[ext_resource type="Script" uid="uid://cybcx3qijhjyb" path="res://scripts/game_manager.gd" id="1_gee14"]
 [ext_resource type="Texture2D" uid="uid://k55aghn6cwtv" path="res://assets/1 Tiles/Tileset.png" id="2_lnu2h"]
 [ext_resource type="PackedScene" uid="uid://b67f2eondq68c" path="res://scenes/player.tscn" id="2_yqjtg"]
 [ext_resource type="Script" uid="uid://c72r2ymrflkqj" path="res://scripts/camera.gd" id="3_lnu2h"]
 [ext_resource type="Script" uid="uid://vygo772copoe" path="res://scripts/gui.gd" id="4_iywne"]
 [ext_resource type="Texture2D" uid="uid://xlvyrqromoc6" path="res://assets/sprites.png" id="4_lbhrr"]
 [ext_resource type="PackedScene" uid="uid://x3vol8ms7cv" path="res://scenes/spike_trap.tscn" id="6_p57ef"]
+[ext_resource type="Script" uid="uid://dyu5bcabycv6w" path="res://scripts/trap_placer.gd" id="7_u5sy4"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_lbhrr"]
 texture = ExtResource("2_lnu2h")
@@ -245,13 +247,16 @@ sources/0 = SubResource("TileSetAtlasSource_lbhrr")
 
 [node name="Game" type="Node2D" unique_id=1794976764]
 
+[node name="GameManager" type="Node" parent="." unique_id=474744127 node_paths=PackedStringArray("spawn_point", "btn_start")]
+script = ExtResource("1_gee14")
+player_scene = ExtResource("2_yqjtg")
+spawn_point = NodePath("../SpawnPoint")
+btn_start = NodePath("../GUI/Shop/Panel/BtnStart")
+
 [node name="TileMap" type="TileMap" parent="." unique_id=1517035448]
 tile_set = SubResource("TileSet_iywne")
 format = 2
 layer_0/tile_data = PackedInt32Array(-589842, 983040, 9, -524306, 917504, 9, -524305, 917504, 8, -393231, 917504, 8, -327694, 983040, 9, -262157, 917504, 8, -196620, 983040, 9, -131083, 917504, 8, -65546, 983040, 9, -9, 917504, 8, 65528, 983040, 9, 131065, 917504, 8, 196602, 983040, 9, 262139, 917504, 8, 327676, 983040, 9, 393213, 917504, 8, -327695, 917504, 9, -196621, 917504, 9, -65547, 917504, 9, 65527, 917504, 9, 196601, 917504, 9, 327675, 917504, 9, 458749, 917504, 9, 458750, 983040, 9, 393217, 786432, 9, 327682, 851968, 8, 393218, 851968, 9, 262147, 786432, 9, 196612, 851968, 8, 262148, 851968, 9, 131077, 786432, 9, 65542, 851968, 8, 131078, 851968, 9, 7, 786432, 9, -65528, 851968, 8, 8, 851968, 9, -131063, 786432, 9, -196598, 851968, 8, -131062, 851968, 9, -262133, 786432, 9, -327668, 851968, 8, -262132, 851968, 9, -393203, 786432, 9, -458738, 851968, 8, -393202, 851968, 9, -524273, 786432, 9, -589808, 851968, 8, -524272, 851968, 9, -655343, 786432, 9, -720878, 851968, 8, -655342, 851968, 9, -458769, 917504, 9, -458768, 983040, 9, -655379, 917504, 8, -589843, 917504, 9)
-
-[node name="Player" parent="." unique_id=1668177995 instance=ExtResource("2_yqjtg")]
-position = Vector2(0, -134)
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=723121104 node_paths=PackedStringArray("target")]
 zoom = Vector2(3, 3)
@@ -260,11 +265,18 @@ limit_left = 0
 limit_right = 0
 position_smoothing_enabled = true
 script = ExtResource("3_lnu2h")
-target = NodePath("../Player")
+target = NodePath("")
+
+[node name="TrapPlacer" type="Node2D" parent="." unique_id=1393012954]
+script = ExtResource("7_u5sy4")
+spikes_scene = ExtResource("6_p57ef")
+
+[node name="SpawnPoint" type="Marker2D" parent="." unique_id=345764492]
+position = Vector2(0, -143)
 
 [node name="GUI" type="CanvasLayer" parent="." unique_id=756802512 node_paths=PackedStringArray("player", "progress_bar", "hp_label")]
 script = ExtResource("4_iywne")
-player = NodePath("../Player")
+player = NodePath("")
 progress_bar = NodePath("Progress/ProgressBar")
 hp_label = NodePath("PlayerStats/Label")
 
@@ -297,6 +309,28 @@ texture = ExtResource("4_lbhrr")
 region_enabled = true
 region_rect = Rect2(0, 155, 626, 291)
 
+[node name="Panel" type="Panel" parent="GUI/Shop" unique_id=1313963260]
+offset_left = 1575.0
+offset_top = 6.0
+offset_right = 1916.0
+offset_bottom = 979.0
+
+[node name="BtnSpikes" type="Button" parent="GUI/Shop/Panel" unique_id=1924936479]
+layout_mode = 0
+offset_left = 91.0
+offset_top = 52.0
+offset_right = 264.0
+offset_bottom = 146.0
+text = "Kolce - $100"
+
+[node name="BtnStart" type="Button" parent="GUI/Shop/Panel" unique_id=685194209]
+layout_mode = 0
+offset_left = 70.0
+offset_top = 842.0
+offset_right = 293.0
+offset_bottom = 919.0
+text = "Start"
+
 [node name="PlayerStats" type="Node" parent="GUI" unique_id=1319965238]
 
 [node name="Label" type="Label" parent="GUI/PlayerStats" unique_id=984212747]
@@ -306,5 +340,4 @@ offset_right = 208.0
 offset_bottom = 48.0
 text = "hp ="
 
-[node name="SpikeTrap" parent="." unique_id=1506088169 instance=ExtResource("6_p57ef")]
-position = Vector2(0, 109)
+[connection signal="pressed" from="GUI/Shop/Panel/BtnSpikes" to="TrapPlacer" method="select_spikes"]

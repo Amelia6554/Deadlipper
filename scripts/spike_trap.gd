@@ -19,5 +19,3 @@ func apply_effect(body):
 	print("Auć! Piłka nadziała się na kolce i traci ", damage, " HP!")
 	if body.has_method("take_damage"):
 		body.take_damage(damage) # Zadajemy obrażenia zdefiniowane w pułapce
-	# Jeśli Twoja piłka ma zmienną zdrowia/obrażeń, możesz zrobić np:
-	# body.take_damage(damage)

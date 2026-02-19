@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://b67f2eondq68c"]
 
 [ext_resource type="Texture2D" uid="uid://dsyycfd8y32us" path="res://assets/Slime Idle.png" id="1_3vyb7"]
-[ext_resource type="Script" uid="uid://bu7wqo17chddi" path="res://scripts/Player.gd" id="1_g2els"]
+[ext_resource type="Script" uid="uid://bu7wqo17chddi" path="res://scripts/player.gd" id="1_g2els"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_3vyb7"]
 bounce = 0.6

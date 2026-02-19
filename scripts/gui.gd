@@ -29,6 +29,6 @@ func _process(_delta: float) -> void:
 		# Pasek pokazuje ten "pozostały dystans" (więc maleje w miarę spadania)
 		progress_bar.value = distance_left
 		
-	if hp_label != null:
-			# Zmieniamy tekst w Labelu, dodając string "HP: " i aktualną wartość hp gracza
-			hp_label.text = "HP: " + str(player.hp)
+	#if hp_label != null:
+			## Zmieniamy tekst w Labelu, dodając string "HP: " i aktualną wartość hp gracza
+			#hp_label.text = "HP: " + str(player.hp)

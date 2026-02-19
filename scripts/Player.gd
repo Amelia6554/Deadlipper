@@ -17,7 +17,7 @@ func _physics_process(_delta):
 		# 2. KLUCZOWE: Dzielimy przez zoom kamery, żeby poznać PRAWDZIWĄ szerokość w świecie gry
 		var world_width = screen_width / camera.zoom.x
 		
-		# 3. Liczymy margines (1/10 prawdziwej szerokości)
+		# 3. Liczymy margines
 		var margin = world_width / 6.0
 		
 		# 4. Pobieramy środek kamery
@@ -33,8 +33,7 @@ func _physics_process(_delta):
 		# 7. Ruch piłki
 		linear_velocity.x = (target_x - global_position.x) * 5
 
-func _input(event):
-	# Dodałem sprawdzenie, czy to na pewno LEWY przycisk myszy
+func _unhandled_input(event):
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		follow_mouse = false
 		gravity_scale = 1   # włącz grawitację
@@ -47,4 +46,3 @@ func take_damage(amount: int):
 	if hp <= 0:
 		hp = 0
 		print("PIŁKA ZNISZCZONA! KONIEC GRY!")
-		# Tutaj później dodamy np. restart poziomu

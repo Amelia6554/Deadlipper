@@ -13,6 +13,5 @@ func trigger_trap(body: Node2D):
 		print("Pułapka ", trap_name, " aktywowana!")
 		apply_effect(body)
 
-# Pusta funkcja. Będziemy ją "nadpisywać" w konkretnych pułapkach!
 func apply_effect(_body: Node2D):
 	pass
