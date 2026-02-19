@@ -2,11 +2,49 @@ extends Node2D
 
 @export var player_money: int = 500
 @export var spikes_scene: PackedScene
+@onready var preview_sprite: Sprite2D = $PreviewSprite
 
 # Zmienna przechowująca scenę aktualnie wybranej pułapki
 var selected_trap_scene: PackedScene = null
 
 var can_place_traps: bool = true
+var place_margin = 50
+
+func _process(_delta):
+	# Jeśli nie mamy wybranej pułapki lub gra wystartowała - chowamy podgląd
+	if not can_place_traps or selected_trap_scene == null:
+		preview_sprite.visible = false
+		return
+
+	update_preview()
+	
+func update_preview():
+	preview_sprite.visible = true
+	var mouse_pos = get_global_mouse_position()
+	
+	# Strzelamy promieniem tak samo jak przy stawianiu
+	var space_state = get_world_2d().direct_space_state
+	var query = PhysicsRayQueryParameters2D.create(mouse_pos - Vector2(0, place_margin), 
+	mouse_pos + Vector2(0, place_margin))
+	var result = space_state.intersect_ray(query)
+	
+	if result:
+		# Ustawiamy pozycję i rotację podglądu
+		preview_sprite.global_position = result.position
+		preview_sprite.rotation = result.normal.angle() + (PI / 2.0)
+		
+		# Sprawdzamy, czy nas stać - jeśli nie, podświetlamy na czerwono
+		var temp_trap = selected_trap_scene.instantiate() as Trap
+		if player_money >= temp_trap.cost:
+			preview_sprite.modulate = Color(1, 1, 1, 0.5) # Normalny półprzezroczysty
+		else:
+			preview_sprite.modulate = Color(1, 0, 0, 0.5) # Czerwony (brak kasy)
+		temp_trap.queue_free()
+	else:
+		# Jeśli myszka jest w powietrzu
+		preview_sprite.global_position = mouse_pos
+		preview_sprite.rotation = 0
+		preview_sprite.modulate = Color(1, 0, 0, 0.5) # Czerwony (nie można tu budować)
 
 func _unhandled_input(event):
 	if can_place_traps == false:
@@ -18,13 +56,22 @@ func _unhandled_input(event):
 
 # Funkcja wywoływana przez przycisk w GUI
 func select_spikes():
+	if not can_place_traps: return
 	selected_trap_scene = spikes_scene
 	print("Wybrano Kolce do postawienia!")
+	
+	# Ustawiamy teksturę podglądu na teksturę kolców
+	var temp_instance = spikes_scene.instantiate()
+	# Szukamy Sprite2D wewnątrz sceny kolców (zakładam, że tam jest)
+	var spike_sprite = temp_instance.get_node("Sprite2D") as Sprite2D
+	preview_sprite.texture = spike_sprite.texture
+	temp_instance.queue_free()
 
 func place_trap(click_position: Vector2):
 	# 1. Najpierw sprawdzamy, CO jest pod myszką (Zanim wydamy pieniądze!)
 	var space_state = get_world_2d().direct_space_state
-	var query = PhysicsRayQueryParameters2D.create(click_position - Vector2(0, 100), click_position + Vector2(0, 100))
+	var query = PhysicsRayQueryParameters2D.create(click_position - Vector2(0, place_margin),
+	 click_position + Vector2(0, place_margin))
 	
 	# Opcjonalnie: query.collision_mask = 1  <-- Tutaj możesz podać numer warstwy Twojej mapy
 	
