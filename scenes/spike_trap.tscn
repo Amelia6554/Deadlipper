@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://x3vol8ms7cv"]
+
+[ext_resource type="Script" uid="uid://b1wycomj7mmxu" path="res://scripts/spike_trap.gd" id="1_urvpr"]
+[ext_resource type="Texture2D" uid="uid://c3ya8d4ma5yq1" path="res://assets/Traps/Spikes/4 Conjoined Spikes.png" id="2_fw5sk"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_x6cko"]
+size = Vector2(40, 5)
+
+[node name="SpikeTrap" type="Area2D" unique_id=1506088169]
+script = ExtResource("1_urvpr")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1730613111]
+texture = ExtResource("2_fw5sk")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1768495907]
+position = Vector2(0, 1.5)
+shape = SubResource("RectangleShape2D_x6cko")
