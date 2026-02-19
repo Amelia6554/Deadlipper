@@ -1,8 +1,9 @@
 extends Camera2D
 
-@export var target: Node2D
-var follow := false
+var target: Node2D = null
+var follow: bool = false 
 
-func _process(delta):
-	if follow and target:
+func _physics_process(delta):
+	if follow and target != null:
+		# Kamera podąża za graczem 
 		global_position = target.global_position

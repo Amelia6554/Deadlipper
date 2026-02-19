@@ -6,7 +6,11 @@ extends Node2D
 # Zmienna przechowująca scenę aktualnie wybranej pułapki
 var selected_trap_scene: PackedScene = null
 
+var can_place_traps: bool = true
+
 func _unhandled_input(event):
+	if can_place_traps == false:
+		return
 	# Sprawdzamy, czy gracz kliknął lewym przyciskiem myszy na mapie
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 		if selected_trap_scene != null:

@@ -46,3 +46,4 @@ func take_damage(amount: int):
 	if hp <= 0:
 		hp = 0
 		print("PIŁKA ZNISZCZONA! KONIEC GRY!")
+		queue_free()
