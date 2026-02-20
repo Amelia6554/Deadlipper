@@ -1,4 +1,5 @@
 extends Node
+#TODO shake screen option
 
 @export var player_scene: PackedScene 
 @export var spawn_point: Marker2D     
@@ -10,10 +11,13 @@ extends Node
 
 @export var level_ui: CanvasLayer
 
+var player	
+
 func _ready():
-	# Podłączamy sygnał wciśnięcia przycisku do funkcji
+	# To jest kluczowe! Łączymy dzwonek Managera z funkcją usuwania kulki
+	GameState.level_completed_signal.connect(_on_level_finished)
+	# Podpinamy przycisk startu
 	btn_start.pressed.connect(_on_start_pressed)
-	
 
 func _on_start_pressed():
 	print("Gra wystartowała!")
@@ -29,7 +33,7 @@ func _on_start_pressed():
 		trap_placer.selected_trap_scene = null
 	
 	# 2. Tworzymy instancję gracza
-	var player = player_scene.instantiate()
+	player = player_scene.instantiate()
 	
 	# 3. Ustawiamy go w pozycji naszego Marker2D (SpawnPoint)
 	player.global_position = spawn_point.global_position
@@ -49,3 +53,14 @@ func _on_start_pressed():
 
 		if level_ui:
 			level_ui.setup_player(player)
+			
+
+func _on_level_finished():
+	if is_instance_valid(player):
+		player.queue_free()
+		print("Kulka zniknęła!")
+	
+	# Opcjonalnie pokazujemy przyciski z powrotem
+	if trap_ui_panel:
+		trap_ui_panel.show()
+		btn_start.show()
