@@ -74,6 +74,13 @@ func activate_traps():
 		if child is Trap:
 			child.is_active = true
 			print("Pułapka ", child.trap_name, " została aktywowana!")
+			
+			
+func deactivate_traps():
+	for child in get_children():
+		if child is Trap:
+			child.is_active = false
+			print("Pułapka ", child.trap_name, " została deaktywowana!")
 
 func get_surface_at_mouse(mouse_pos):
 	var space_state = get_world_2d().direct_space_state

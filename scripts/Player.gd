@@ -11,6 +11,10 @@ func _ready():
 func actvatePlayer():
 	follow_mouse = false
 	gravity_scale = 1  
+	
+func deactivatePlayer():
+	gravity_scale = 0
+	follow_mouse = true
 
 func _physics_process(_delta):
 	if follow_mouse:

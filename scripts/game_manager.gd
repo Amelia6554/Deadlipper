@@ -29,6 +29,7 @@ func _on_shop_phase():
 	if trap_placer:
 		trap_placer.can_place_traps = true
 	camera.follow_mouse()
+	trap_placer.deactivate_traps()
 	
 
 func _unhandled_input(event):
@@ -59,9 +60,7 @@ func _on_drop_phase():
 	if camera:
 		camera.target = player
 		camera.static_camera()
-
-		# Wyłączamy sterowanie kulką na czas lotu kamery
-		player.follow_mouse = false 
+		player.deactivatePlayer()
 
 		var camera_tween = create_tween()
 		camera_tween.tween_property(camera, "global_position", Vector2(0, 0), 0.5).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
