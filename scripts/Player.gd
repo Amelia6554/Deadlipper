@@ -2,7 +2,7 @@ extends RigidBody2D
 
 @onready var camera = get_parent().get_node("Camera2D")
 var follow_mouse = true
-var hp = 100
+var score = 0
 
 func _ready():
 	gravity_scale = 0   # brak grawitacji na start
@@ -45,8 +45,8 @@ func _physics_process(_delta):
 		#camera.follow = true
 		
 func take_damage(amount: int):
-	hp -= amount
-	print("Piłka obrywa za: ", amount, " | Zostało HP: ", hp)
+	score += amount
+	print("Piłka obrywa za: ", amount, " | Liczba punktów: ", score)
 	
 	# --- EFEKT KOLORU ---
 	# Tworzymy tween (animator)
@@ -56,12 +56,3 @@ func take_damage(amount: int):
 	# 2. W ciągu 0.2 sekundy wróć do białego (czyli naturalnego koloru)
 	tween.tween_property($AnimatedSprite2D, "modulate", Color.WHITE, 0.2)
 	# --------------------
-
-	if hp <= 0:
-		die()
-
-func die():
-	hp = 0
-	print("PIŁKA ZNISZCZONA!")
-	# Tutaj warto dodać np. efekt wybuchu przed usunięciem
-	queue_free()

@@ -1,11 +1,11 @@
 extends Trap # Dziedziczymy wszystkie zmienne (cost, damage itp.) z klasy Trap!
 
-func _ready():
-	# Tu ustawiamy statystyki specyficzne dla kolców
+func _init():
 	trap_name = "Kolce"
 	cost = 100
 	damage = 25
-	
+
+func _ready():	
 	# Podłączamy wbudowany sygnał Godota, który wykrywa wejście obiektu
 	body_entered.connect(_on_body_entered)
 

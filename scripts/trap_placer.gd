@@ -34,12 +34,7 @@ func update_money_display():
 func update_preview():
 	preview_sprite.visible = true
 	var mouse_pos = get_global_mouse_position()
-	
-	# Strzelamy promieniem tak samo jak przy stawianiu
-	var space_state = get_world_2d().direct_space_state
-	var query = PhysicsRayQueryParameters2D.create(mouse_pos - Vector2(0, place_margin), 
-	mouse_pos + Vector2(0, place_margin))
-	var result = space_state.intersect_ray(query)
+	var result = get_surface_at_mouse(mouse_pos)
 	
 	if result:
 		# Ustawiamy pozycję i rotację podglądu
@@ -47,17 +42,24 @@ func update_preview():
 		preview_sprite.rotation = result.normal.angle() + (PI / 2.0)
 		
 		# Sprawdzamy, czy nas stać - jeśli nie, podświetlamy na czerwono
-		var temp_trap = selected_trap_scene.instantiate() as Trap
-		if player_money >= temp_trap.cost:
-			preview_sprite.modulate = Color(1, 1, 1, 0.5) # Normalny półprzezroczysty
+		var trap_cost = get_trap_cost(selected_trap_scene)
+	
+		if player_money >= trap_cost:
+			preview_sprite.modulate = Color(1, 1, 1, 0.5)
 		else:
-			preview_sprite.modulate = Color(1, 0, 0, 0.5) # Czerwony (brak kasy)
-		temp_trap.queue_free()
+			preview_sprite.modulate = Color(1, 0, 0, 0.5)
 	else:
 		# Jeśli myszka jest w powietrzu
 		preview_sprite.global_position = mouse_pos
 		preview_sprite.rotation = 0
 		preview_sprite.modulate = Color(1, 0, 0, 0.5) # Czerwony (nie można tu budować)
+		
+func get_trap_cost(scene: PackedScene) -> int:
+	var state = scene.get_state()
+	for i in state.get_node_property_count(0):
+		if state.get_node_property_name(0, i) == "cost":
+			return state.get_node_property_value(0, i)
+	return 0 # Domyślnie 0 jeśli nie znaleziono
 
 func _unhandled_input(event):
 	if can_place_traps == false:
@@ -73,15 +75,43 @@ func activate_traps():
 			child.is_active = true
 			print("Pułapka ", child.trap_name, " została aktywowana!")
 
-func place_trap(click_position: Vector2):
-	# 1. Najpierw sprawdzamy, CO jest pod myszką (Zanim wydamy pieniądze!)
+func get_surface_at_mouse(mouse_pos):
 	var space_state = get_world_2d().direct_space_state
-	var query = PhysicsRayQueryParameters2D.create(click_position - Vector2(0, place_margin),
-	 click_position + Vector2(0, place_margin))
 	
-	# Opcjonalnie: query.collision_mask = 1  <-- Tutaj możesz podać numer warstwy Twojej mapy
+	# 1. Sprawdzamy, czy myszka nie jest "wmurowana" w ścianę
+	var point_query = PhysicsPointQueryParameters2D.new()
+	point_query.position = mouse_pos
+	point_query.collide_with_areas = false
+	if not space_state.intersect_point(point_query).is_empty():
+		return null # Nie pozwalamy budować "wewnątrz"
 	
-	var result = space_state.intersect_ray(query)
+	var closest_result = null
+	var min_distance = INF
+	
+	# 2. Strzelamy 8 promieniami OD MYSZKI na zewnątrz
+	# To znajdzie ścianę, która jest najbliżej Twojego kursora
+	var directions = [
+		Vector2.UP, Vector2.DOWN, Vector2.LEFT, Vector2.RIGHT,
+		Vector2(1, 1).normalized(), Vector2(1, -1).normalized(),
+		Vector2(-1, 1).normalized(), Vector2(-1, -1).normalized()
+	]
+	
+	for dir in directions:
+		# Strzelamy od myszki w danym kierunku na odległość place_margin
+		var ray_query = PhysicsRayQueryParameters2D.create(mouse_pos, mouse_pos + (dir * place_margin))
+		var res = space_state.intersect_ray(ray_query)
+		
+		if res:
+			var dist = mouse_pos.distance_to(res.position)
+			# Wybieramy powierzchnię, która jest najbliżej kursora
+			if dist < min_distance:
+				min_distance = dist
+				closest_result = res
+				
+	return closest_result
+
+func place_trap(click_position: Vector2):
+	var result = get_surface_at_mouse(click_position)
 	
 	# 2. JEŚLI NIC NIE TRAFILIŚMY (powietrze), przerywamy funkcję
 	if not result:
@@ -99,15 +129,9 @@ func place_trap(click_position: Vector2):
 		print("Kupiono pułapkę! Zostało pieniędzy: ", player_money)
 		
 		if result:
-			# Jeśli promień w coś trafił (np. w podłoże), przyklejamy pułapkę 
-			# do punktu styku
 			trap_instance.global_position = result.position
 			
-			var surface_normal = result.normal
-			# Obracamy pułapkę! result.normal.angle() podaje kąt pochylenia, 
-			# a dodanie PI / 2.0 (czyli 90 stopni) sprawia, że pułapka stoi 
-			# prosto względem podłoża.
-			trap_instance.rotation = surface_normal.angle() + (PI / 2.0)
+			trap_instance.rotation = result.normal.angle() + (PI / 2.0)
 			add_child(trap_instance)
 		else:
 			trap_instance.queue_free()

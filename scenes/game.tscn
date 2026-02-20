@@ -478,7 +478,7 @@ script = ExtResource("1_gee14")
 player_scene = ExtResource("2_yqjtg")
 spawn_point = NodePath("../SpawnPoint")
 trap_placer = NodePath("../TrapPlacer")
-trap_ui_panel = NodePath("../GUI/Shop/Panel")
+trap_ui_panel = NodePath("../GUI/Shop/ShopPanel")
 camera = NodePath("../Camera2D")
 level_ui = NodePath("../GUI")
 
@@ -497,7 +497,7 @@ script = ExtResource("3_lnu2h")
 
 [node name="TrapPlacer" type="Node2D" parent="." unique_id=1393012954 node_paths=PackedStringArray("money_label")]
 script = ExtResource("7_u5sy4")
-money_label = NodePath("../GUI/Shop/Panel/MoneyLabel")
+money_label = NodePath("../GUI/Shop/ShopPanel/MoneyLabel")
 spikes_scene = ExtResource("6_p57ef")
 trampoline_scene = ExtResource("7_0tnpc")
 fan_scene = ExtResource("8_dinhu")
@@ -521,11 +521,12 @@ texture = ExtResource("9_dinhu")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="EndLevel" unique_id=1742017033]
 shape = SubResource("RectangleShape2D_kvuet")
 
-[node name="GUI" type="CanvasLayer" parent="." unique_id=756802512 node_paths=PackedStringArray("progress_bar", "hp_label", "btn_start")]
+[node name="GUI" type="CanvasLayer" parent="." unique_id=756802512 node_paths=PackedStringArray("progress_bar", "score_label", "btn_start", "end_level_area")]
 script = ExtResource("4_iywne")
 progress_bar = NodePath("Progress/ProgressBar")
-hp_label = NodePath("PlayerStats/Label")
-btn_start = NodePath("Shop/Panel/BtnStart")
+score_label = NodePath("PlayerStats/Score")
+btn_start = NodePath("Shop/ShopPanel/BtnStart")
+end_level_area = NodePath("../EndLevel")
 
 [node name="Progress" type="Node" parent="GUI" unique_id=715695621]
 
@@ -556,13 +557,13 @@ texture = ExtResource("4_lbhrr")
 region_enabled = true
 region_rect = Rect2(0, 155, 626, 291)
 
-[node name="Panel" type="Panel" parent="GUI/Shop" unique_id=1313963260]
+[node name="ShopPanel" type="Panel" parent="GUI/Shop" unique_id=1313963260]
 offset_left = 1575.0
 offset_top = 6.0
 offset_right = 1916.0
 offset_bottom = 979.0
 
-[node name="BtnSpikes" type="Button" parent="GUI/Shop/Panel" unique_id=1924936479]
+[node name="BtnSpikes" type="Button" parent="GUI/Shop/ShopPanel" unique_id=1924936479]
 layout_mode = 0
 offset_left = 87.0
 offset_top = 121.0
@@ -570,15 +571,15 @@ offset_right = 260.0
 offset_bottom = 215.0
 text = "Kolce - $100"
 
-[node name="BtnTrampoline" type="Button" parent="GUI/Shop/Panel" unique_id=1987935787]
+[node name="BtnTrampoline" type="Button" parent="GUI/Shop/ShopPanel" unique_id=1987935787]
 layout_mode = 0
 offset_left = 88.0
 offset_top = 253.0
 offset_right = 260.0
 offset_bottom = 341.0
-text = "Trampolina - $150"
+text = "Trampolina - $100"
 
-[node name="BtnFan" type="Button" parent="GUI/Shop/Panel" unique_id=691850514]
+[node name="BtnFan" type="Button" parent="GUI/Shop/ShopPanel" unique_id=691850514]
 layout_mode = 0
 offset_left = 98.0
 offset_top = 369.0
@@ -586,7 +587,7 @@ offset_right = 256.0
 offset_bottom = 451.0
 text = "Wiatrak - $150"
 
-[node name="BtnStart" type="Button" parent="GUI/Shop/Panel" unique_id=685194209]
+[node name="BtnStart" type="Button" parent="GUI/Shop/ShopPanel" unique_id=685194209]
 layout_mode = 0
 offset_left = 70.0
 offset_top = 842.0
@@ -594,7 +595,7 @@ offset_right = 293.0
 offset_bottom = 919.0
 text = "Start"
 
-[node name="MoneyLabel" type="Label" parent="GUI/Shop/Panel" unique_id=1089379082]
+[node name="MoneyLabel" type="Label" parent="GUI/Shop/ShopPanel" unique_id=1089379082]
 layout_mode = 0
 offset_left = 111.0
 offset_top = 18.0
@@ -604,14 +605,21 @@ text = "Saldo: $1000"
 
 [node name="PlayerStats" type="Node" parent="GUI" unique_id=1319965238]
 
-[node name="Label" type="Label" parent="GUI/PlayerStats" unique_id=984212747]
+[node name="Restart" type="Button" parent="GUI/PlayerStats" unique_id=1198026966]
+offset_left = 164.0
+offset_top = 971.0
+offset_right = 383.0
+offset_bottom = 1002.0
+text = "Restart"
+
+[node name="Score" type="Label" parent="GUI/PlayerStats" unique_id=984212747]
 offset_left = 135.0
 offset_top = 15.0
 offset_right = 208.0
 offset_bottom = 48.0
-text = "hp ="
 
 [connection signal="body_entered" from="EndLevel" to="EndLevel" method="_on_body_entered"]
-[connection signal="pressed" from="GUI/Shop/Panel/BtnSpikes" to="TrapPlacer" method="select_spikes"]
-[connection signal="pressed" from="GUI/Shop/Panel/BtnTrampoline" to="TrapPlacer" method="select_trampoline"]
-[connection signal="pressed" from="GUI/Shop/Panel/BtnFan" to="TrapPlacer" method="select_fan"]
+[connection signal="pressed" from="GUI/Shop/ShopPanel/BtnSpikes" to="TrapPlacer" method="select_spikes"]
+[connection signal="pressed" from="GUI/Shop/ShopPanel/BtnTrampoline" to="TrapPlacer" method="select_trampoline"]
+[connection signal="pressed" from="GUI/Shop/ShopPanel/BtnFan" to="TrapPlacer" method="select_fan"]
+[connection signal="pressed" from="GUI/PlayerStats/Restart" to="GameManager" method="restart_level"]

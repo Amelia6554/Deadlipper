@@ -1,12 +1,13 @@
-extends Trap # Dziedziczymy po Trap
+extends Trap 
 
 @export var bounce_force: float = 800.0
 
-func _ready():
+func _init():
 	trap_name = "Trampolina"
-	cost = 150
-	damage = 0 # Trampolina nie zadaje obrażeń
-	
+	cost = 100
+	damage = 0
+
+func _ready():
 	# Podłączamy wykrywanie wejścia
 	body_entered.connect(_on_body_entered)
 

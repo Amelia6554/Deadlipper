@@ -1,12 +1,11 @@
 extends CanvasLayer
 
-# 1. Usuwamy @export przed graczem. Teraz to po prostu pusta zmienna, 
-# która czeka, aż GameManager ją uzupełni.
 var player: Node2D = null 
 
 @export var progress_bar : ProgressBar
-@export var hp_label: Label
+@export var score_label: Label
 @export var btn_start: Button
+@export var end_level_area: Area2D
 
 var end_of_level_y: float = 5000.0
 var start_y: float = 0.0
@@ -28,6 +27,7 @@ func setup_player(new_player: Node2D) -> void:
 	
 	start_y = player.global_position.y
 	
+	end_of_level_y = end_level_area.global_position.y
 	progress_bar.min_value = 0
 	progress_bar.max_value = end_of_level_y - start_y
 	
@@ -42,5 +42,5 @@ func _process(_delta: float) -> void:
 		
 		progress_bar.value = distance_left
 		
-		if hp_label != null:
-			hp_label.text = "HP: " + str(player.hp)
+		if score_label != null:
+			score_label.text = "Damage: " + str(player.score)
