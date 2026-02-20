@@ -43,8 +43,8 @@ trail_enabled = true
 process_material = SubResource("ParticleProcessMaterial_u86em")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1048059668]
-position = Vector2(0, -13)
 texture = ExtResource("2_k3fm3")
+offset = Vector2(0, -13)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=749690737]
 position = Vector2(0.5, -87.5)

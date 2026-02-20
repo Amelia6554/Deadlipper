@@ -11,8 +11,8 @@ script = ExtResource("1_urvpr")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1730613111]
 texture = ExtResource("2_fw5sk")
-offset = Vector2(0, -5)
+offset = Vector2(0, -4.5)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1768495907]
-position = Vector2(0, -2.5)
+position = Vector2(0, -3)
 shape = SubResource("RectangleShape2D_x6cko")

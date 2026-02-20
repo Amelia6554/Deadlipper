@@ -147,32 +147,28 @@ func _on_btn_spikes_pressed() -> void:
 	
 #------------------Traps--------------------
 
-# Funkcja wywoływana przez przycisk w GUI
 func select_spikes():
-	if not can_place_traps: return
-	selected_trap_scene = spikes_scene
-	print("Wybrano Kolce do postawienia!")
-	
-	# Ustawiamy teksturę podglądu na teksturę kolców
-	var temp_instance = spikes_scene.instantiate()
-	
-	var spike_sprite = temp_instance.get_node("Sprite2D") as Sprite2D
-	preview_sprite.texture = spike_sprite.texture
-	temp_instance.queue_free()
+	_set_selected_trap(spikes_scene, "Kolce")
 	
 func select_trampoline():
-	if not can_place_traps: return
-	selected_trap_scene = trampoline_scene
-	
-	# Aktualizujemy ikonkę podglądu
-	var temp = trampoline_scene.instantiate()
-	preview_sprite.texture = temp.get_node("Sprite2D").texture
-	temp.queue_free()
+	_set_selected_trap(trampoline_scene, "Trampolina")
 	
 func select_fan():
+	_set_selected_trap(fan_scene, "Wiatrak")
+
+func _set_selected_trap(new_scene: PackedScene, trap_label: String):
 	if not can_place_traps: return
-	selected_trap_scene = fan_scene
 	
-	var temp = fan_scene.instantiate()
-	preview_sprite.texture = temp.get_node("Sprite2D").texture
-	temp.queue_free()
+	selected_trap_scene = new_scene
+	print("Wybrano: ", trap_label)
+	
+	var temp_instance = selected_trap_scene.instantiate()
+	var sprite = temp_instance.get_node("Sprite2D") as Sprite2D
+	
+	if sprite:
+		preview_sprite.texture = sprite.texture
+		preview_sprite.offset = sprite.offset
+		preview_sprite.scale = sprite.scale
+		preview_sprite.centered = sprite.centered
+	
+	temp_instance.queue_free()

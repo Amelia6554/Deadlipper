@@ -505,7 +505,6 @@ fan_scene = ExtResource("8_dinhu")
 [node name="PreviewSprite" type="Sprite2D" parent="TrapPlacer" unique_id=1977265922]
 visible = false
 modulate = Color(1, 1, 1, 0.78431374)
-offset = Vector2(0, -5)
 
 [node name="SpawnPoint" type="Marker2D" parent="." unique_id=345764492]
 position = Vector2(0, -143)
