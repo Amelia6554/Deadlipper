@@ -6,6 +6,11 @@ var hp = 100
 
 func _ready():
 	gravity_scale = 0   # brak grawitacji na start
+	GameState.level_run_phase_signal.connect(actvatePlayer)
+	
+func actvatePlayer():
+	follow_mouse = false
+	gravity_scale = 1  
 
 func _physics_process(_delta):
 	if follow_mouse:
@@ -33,11 +38,11 @@ func _physics_process(_delta):
 		# 7. Ruch piłki
 		linear_velocity.x = (target_x - global_position.x) * 5
 
-func _unhandled_input(event):
-	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		follow_mouse = false
-		gravity_scale = 1   # włącz grawitację
-		camera.follow = true
+#func _unhandled_input(event):
+	#if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		#follow_mouse = false
+		#gravity_scale = 1   # włącz grawitację
+		#camera.follow = true
 		
 func take_damage(amount: int):
 	hp -= amount

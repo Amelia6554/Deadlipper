@@ -5,7 +5,7 @@ class_name Trap # To sprawi, że Godot rozpozna "Trap" jako nowy typ węzła!
 @export var trap_name: String = "Nieznana Pułapka"
 @export var cost: int = 50
 @export var damage: int = 10
-@export var is_active: bool = true
+@export var is_active: bool = false
 
 # Funkcja wywoływana, gdy piłka dotknie pułapki
 func trigger_trap(body: Node2D):

@@ -7,6 +7,7 @@ extends Node2D
 #---traps-------------------------------
 @export var spikes_scene: PackedScene
 @export var trampoline_scene: PackedScene
+@export var fan_scene: PackedScene
 
 # Zmienna przechowująca scenę aktualnie wybranej pułapki
 var selected_trap_scene: PackedScene = null
@@ -66,6 +67,12 @@ func _unhandled_input(event):
 		if selected_trap_scene != null:
 			place_trap(get_global_mouse_position())
 
+func activate_traps():
+	for child in get_children():
+		if child is Trap:
+			child.is_active = true
+			print("Pułapka ", child.trap_name, " została aktywowana!")
+
 func place_trap(click_position: Vector2):
 	# 1. Najpierw sprawdzamy, CO jest pod myszką (Zanim wydamy pieniądze!)
 	var space_state = get_world_2d().direct_space_state
@@ -124,7 +131,7 @@ func select_spikes():
 	
 	# Ustawiamy teksturę podglądu na teksturę kolców
 	var temp_instance = spikes_scene.instantiate()
-	# Szukamy Sprite2D wewnątrz sceny kolców (zakładam, że tam jest)
+	
 	var spike_sprite = temp_instance.get_node("Sprite2D") as Sprite2D
 	preview_sprite.texture = spike_sprite.texture
 	temp_instance.queue_free()
@@ -135,5 +142,13 @@ func select_trampoline():
 	
 	# Aktualizujemy ikonkę podglądu
 	var temp = trampoline_scene.instantiate()
+	preview_sprite.texture = temp.get_node("Sprite2D").texture
+	temp.queue_free()
+	
+func select_fan():
+	if not can_place_traps: return
+	selected_trap_scene = fan_scene
+	
+	var temp = fan_scene.instantiate()
 	preview_sprite.texture = temp.get_node("Sprite2D").texture
 	temp.queue_free()

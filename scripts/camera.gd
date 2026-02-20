@@ -65,3 +65,17 @@ func handle_edge_scrolling(delta):
 
 	# Zastosowanie ruchu
 	global_position += move_vec * scroll_speed * zoom.x * delta
+	
+	
+	
+func follow_mouse():
+	follow = false
+	locked = false
+	
+func follow_player():
+	follow = true
+	locked = true
+	
+func static_camera():
+	follow = false
+	locked = true
