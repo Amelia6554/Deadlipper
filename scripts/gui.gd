@@ -44,3 +44,7 @@ func _process(_delta: float) -> void:
 		
 		if score_label != null:
 			score_label.text = "Damage: " + str(player.score)
+
+
+func _on_restart_player_pressed() -> void:
+	GameState._shop_phase()

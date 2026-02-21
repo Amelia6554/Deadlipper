@@ -3,11 +3,13 @@ extends Camera2D
 @export var scroll_speed: float = 200.0 # Prędkość przesuwania
 @export var look_ahead_distance: float = 0.2 # Jak bardzo wyprzedzać (ułamek sekundy)
 @export var max_look_ahead: float = 300.0    # Maksymalne wychylenie w pikselach
+@export var vertical_only_follow: bool = true
 var margin_percent: float = 1.0 / 15.0 # Twój margines 1/15
 
 var target: RigidBody2D = null
 var follow: bool = false
 var locked: bool = false
+var initial_x: float = 0.0
 
 func _process(delta: float):
 	# 1. Jeśli kamera jest zablokowana (po kliknięciu Start)
@@ -26,8 +28,16 @@ func _process(delta: float):
 			
 			# 4. Płynnie przesuwamy kamerę do punktu: pozycja piłki + przesunięcie
 			# Używamy lerp, żeby ruch był miękki dla oka
-			var target_pos = target.global_position + target_offset
+			var target_pos
+			if vertical_only_follow:
+				# TYLKO PION: stałe X, ruchome Y
+				target_pos = Vector2(initial_x, target.global_position.y + target_offset.y)
+			else:
+				# PEŁNY RUCH: zarówno X jak i Y
+				target_pos = target.global_position + target_offset
+			
 			global_position = global_position.lerp(target_pos, 10.0 * delta)
+			initial_x = global_position.x
 		else:
 			# Jeśli jeszcze nie puszczono piłki - stój w miejscu (np. na 0,0)
 			pass
@@ -65,7 +75,12 @@ func handle_edge_scrolling(delta):
 
 	# Zastosowanie ruchu
 	global_position += move_vec * scroll_speed * zoom.x * delta
-	
+
+func set_vertical_only_follow(enabled: bool):
+	vertical_only_follow = enabled
+	# Jeśli przełączamy na tryb pionowy, zapisz aktualną pozycję X
+	if enabled:
+		initial_x = global_position.x
 	
 	
 func follow_mouse():

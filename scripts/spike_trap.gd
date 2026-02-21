@@ -18,4 +18,4 @@ func _on_body_entered(body):
 func apply_effect(body):
 	print("Auć! Piłka nadziała się na kolce i traci ", damage, " HP!")
 	if body.has_method("take_damage"):
-		body.take_damage(damage) # Zadajemy obrażenia zdefiniowane w pułapce
+		body.take_damage(damage, global_position) # Zadajemy obrażenia zdefiniowane w pułapce

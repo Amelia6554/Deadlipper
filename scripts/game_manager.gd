@@ -17,6 +17,7 @@ func _ready():
 	GameState.level_drop_player_phase_signal.connect(_on_drop_phase)
 	GameState.level_run_phase_signal.connect(_on_run_phase)
 	GameState.level_completed_phase_signal.connect(_on_level_finished)
+	GameState.level_restart_signal.connect(restart_level)
 
 func restart_level():
 	# Przeładowuje aktualnie otwartą scenę
@@ -28,8 +29,10 @@ func _on_shop_phase():
 		trap_ui_panel.show()
 	if trap_placer:
 		trap_placer.can_place_traps = true
+	delete_player()
 	camera.follow_mouse()
 	trap_placer.deactivate_traps()
+	clear_all_blood()
 	
 
 func _unhandled_input(event):
@@ -47,14 +50,13 @@ func _on_drop_phase():
 	if trap_placer:
 		trap_placer.can_place_traps = false
 		trap_placer.selected_trap_scene = null
+		
+	delete_player()
 	
-	# 2. Tworzymy instancję gracza
 	player = player_scene.instantiate()
 	
-	# 3. Ustawiamy go w pozycji naszego Marker2D (SpawnPoint)
 	player.global_position = spawn_point.global_position
 	
-	# 4. Dodajemy gracza do sceny. 
 	get_parent().add_child(player)
 	
 	if camera:
@@ -65,7 +67,6 @@ func _on_drop_phase():
 		var camera_tween = create_tween()
 		camera_tween.tween_property(camera, "global_position", Vector2(0, 0), 0.5).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 
-		# Kiedy kamera skończy lecieć, pozwól kulce śledzić myszkę
 		camera_tween.finished.connect(func(): if is_instance_valid(player): player.follow_mouse = true)
 		
 		if level_ui:
@@ -77,3 +78,20 @@ func _on_level_finished():
 		print("Kulka zniknęła!")
 	
 	GameState._shop_phase()
+
+func delete_player():
+	if is_instance_valid(player):
+		player.queue_free()
+		player = null
+
+func clear_all_blood():
+	if not get_tree():
+		print("Brak drzewa!")
+		return
+		
+	var blood_effects = get_tree().get_nodes_in_group("blood")
+	print("Znaleziono ", blood_effects.size(), " efektów krwi")
+	
+	for blood in blood_effects:
+		if is_instance_valid(blood):
+			blood.queue_free()
