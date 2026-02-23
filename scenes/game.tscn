@@ -4,11 +4,12 @@
 [ext_resource type="Texture2D" uid="uid://k55aghn6cwtv" path="res://assets/1 Tiles/Tileset.png" id="2_lnu2h"]
 [ext_resource type="PackedScene" uid="uid://b67f2eondq68c" path="res://scenes/player.tscn" id="2_yqjtg"]
 [ext_resource type="Script" uid="uid://c72r2ymrflkqj" path="res://scripts/camera.gd" id="3_lnu2h"]
-[ext_resource type="Script" uid="uid://vygo772copoe" path="res://scripts/gui.gd" id="4_iywne"]
+[ext_resource type="Script" uid="uid://vygo772copoe" path="res://scripts/Ui/gui.gd" id="4_iywne"]
 [ext_resource type="Texture2D" uid="uid://xlvyrqromoc6" path="res://assets/sprites.png" id="4_lbhrr"]
 [ext_resource type="PackedScene" uid="uid://x3vol8ms7cv" path="res://scenes/spike_trap.tscn" id="6_p57ef"]
+[ext_resource type="Texture2D" uid="uid://lrkmh7lbqg7q" path="res://assets/UI/01.png" id="6_trtic"]
 [ext_resource type="PackedScene" uid="uid://dco1im4p70g0l" path="res://scenes/trampoline_trap.tscn" id="7_0tnpc"]
-[ext_resource type="Script" uid="uid://dyu5bcabycv6w" path="res://scripts/trap_placer.gd" id="7_u5sy4"]
+[ext_resource type="Script" uid="uid://dyu5bcabycv6w" path="res://scripts/Traps/trap_placer.gd" id="7_u5sy4"]
 [ext_resource type="PackedScene" uid="uid://b84avw5tiifw3" path="res://scenes/fan_trap.tscn" id="8_dinhu"]
 [ext_resource type="Script" uid="uid://bej6g343lab5d" path="res://scripts/end_level.gd" id="8_kvpfn"]
 [ext_resource type="Texture2D" uid="uid://bd6fwhjfm0xeb" path="res://assets/3 Objects/Stones/1.png" id="9_dinhu"]
@@ -499,6 +500,7 @@ script = ExtResource("3_lnu2h")
 [node name="TrapPlacer" type="Node2D" parent="." unique_id=1393012954 node_paths=PackedStringArray("money_label")]
 script = ExtResource("7_u5sy4")
 money_label = NodePath("../GUI/Shop/ShopPanel/MoneyLabel")
+hammer_icon = ExtResource("6_trtic")
 spikes_scene = ExtResource("6_p57ef")
 trampoline_scene = ExtResource("7_0tnpc")
 fan_scene = ExtResource("8_dinhu")
@@ -506,9 +508,11 @@ fan_scene = ExtResource("8_dinhu")
 [node name="PreviewSprite" type="Sprite2D" parent="TrapPlacer" unique_id=1977265922]
 visible = false
 modulate = Color(1, 1, 1, 0.78431374)
+z_index = 5
+centered = false
 
 [node name="SpawnPoint" type="Marker2D" parent="." unique_id=345764492]
-position = Vector2(0, -143)
+position = Vector2(0, -151)
 
 [node name="EndLevel" type="Area2D" parent="." unique_id=1446884994]
 position = Vector2(269, 953)
@@ -605,13 +609,21 @@ offset_right = 238.0
 offset_bottom = 41.0
 text = "Saldo: $1000"
 
+[node name="BtnDelete" type="Button" parent="GUI/Shop/ShopPanel" unique_id=597771116]
+layout_mode = 0
+offset_left = 72.0
+offset_top = 754.0
+offset_right = 293.0
+offset_bottom = 820.0
+text = "Usuń"
+
 [node name="PlayerStats" type="Node" parent="GUI" unique_id=1319965238]
 
 [node name="Restart" type="Button" parent="GUI/PlayerStats" unique_id=1198026966]
-offset_left = 164.0
-offset_top = 971.0
-offset_right = 383.0
-offset_bottom = 1002.0
+offset_left = 163.0
+offset_top = 946.0
+offset_right = 382.0
+offset_bottom = 977.0
 text = "Restart"
 
 [node name="Score" type="Label" parent="GUI/PlayerStats" unique_id=984212747]
@@ -623,9 +635,11 @@ offset_bottom = 48.0
 [node name="Controls" type="Node" parent="GUI" unique_id=592985146]
 
 [node name="PauseMenu" parent="GUI/Controls" unique_id=914931070 instance=ExtResource("13_kvuet")]
+visible = false
 
 [connection signal="body_entered" from="EndLevel" to="EndLevel" method="_on_body_entered"]
 [connection signal="pressed" from="GUI/Shop/ShopPanel/BtnSpikes" to="TrapPlacer" method="select_spikes"]
 [connection signal="pressed" from="GUI/Shop/ShopPanel/BtnTrampoline" to="TrapPlacer" method="select_trampoline"]
 [connection signal="pressed" from="GUI/Shop/ShopPanel/BtnFan" to="TrapPlacer" method="select_fan"]
+[connection signal="pressed" from="GUI/Shop/ShopPanel/BtnDelete" to="GUI" method="_on_destruction_pressed"]
 [connection signal="pressed" from="GUI/PlayerStats/Restart" to="GUI" method="_on_restart_player_pressed"]

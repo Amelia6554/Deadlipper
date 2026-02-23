@@ -10,10 +10,14 @@ extends Node
 
 @export var level_ui: CanvasLayer
 
+#States
+var can_start_run: bool = false
+
 var player
 
 func _ready():
 	GameState.level_shop_phase_signal.connect(_on_shop_phase)
+	GameState.level_destruction_phase_signal.connect(_on_destruction_phase)
 	GameState.level_drop_player_phase_signal.connect(_on_drop_phase)
 	GameState.level_run_phase_signal.connect(_on_run_phase)
 	GameState.level_completed_phase_signal.connect(_on_level_finished)
@@ -33,17 +37,23 @@ func _on_shop_phase():
 	camera.follow_mouse()
 	trap_placer.deactivate_traps()
 	clear_all_blood()
-	
+
+func _on_destruction_phase():
+	trap_placer.select_destroy_tool()
 
 func _unhandled_input(event):
-	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT and GameState.get_current_state() == GameState.GameStateEnum.DROP:
-		GameState._run_phase()
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		if GameState.get_current_state() == GameState.GameStateEnum.DROP and can_start_run:
+			if is_instance_valid(player):
+				player.activatePlayer()
+			GameState._run_phase()
 
 func _on_run_phase():
 	camera.follow_player()
 	trap_placer.activate_traps()
 
 func _on_drop_phase():
+	can_start_run = false
 	if trap_ui_panel:
 		trap_ui_panel.hide() 
 		
@@ -59,15 +69,19 @@ func _on_drop_phase():
 	
 	get_parent().add_child(player)
 	
+	
 	if camera:
 		camera.target = player
 		camera.static_camera()
-		player.deactivatePlayer()
+		
 
 		var camera_tween = create_tween()
 		camera_tween.tween_property(camera, "global_position", Vector2(0, 0), 0.5).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 
-		camera_tween.finished.connect(func(): if is_instance_valid(player): player.follow_mouse = true)
+		camera_tween.finished.connect(func(): 
+			if is_instance_valid(player):
+				player.follow_player()
+			can_start_run = true)
 		
 		if level_ui:
 			level_ui.setup_player(player)

@@ -14,13 +14,12 @@ func _ready():
 	btn_start.pressed.connect(_on_start_pressed)
 	GameState.level_shop_phase_signal.connect(_on_shop_phase)
 	
-func _on_start_pressed():
-	print("Start button pressed")
-	btn_start.hide()
-	GameState._drop_phase()
+
 	
 func _on_shop_phase():
 	btn_start.show()
+	
+
 
 func setup_player(new_player: Node2D) -> void:
 	player = new_player
@@ -37,7 +36,6 @@ func setup_player(new_player: Node2D) -> void:
 
 func _process(_delta: float) -> void:
 	if player != null:
-		# Obliczamy, ile pikseli zostało nam jeszcze do mety
 		var distance_left = end_of_level_y - player.global_position.y
 		
 		progress_bar.value = distance_left
@@ -45,6 +43,15 @@ func _process(_delta: float) -> void:
 		if score_label != null:
 			score_label.text = "Damage: " + str(player.score)
 
+#---Buttons---------------------------------------
+
+func _on_start_pressed():
+	print("Start button pressed")
+	btn_start.hide()
+	GameState._drop_phase()
 
 func _on_restart_player_pressed() -> void:
 	GameState._shop_phase()
+	
+func _on_destruction_pressed():
+	GameState._destruction_phase()

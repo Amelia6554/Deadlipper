@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://x3vol8ms7cv"]
 
-[ext_resource type="Script" uid="uid://b1wycomj7mmxu" path="res://scripts/spike_trap.gd" id="1_urvpr"]
+[ext_resource type="Script" uid="uid://b1wycomj7mmxu" path="res://scripts/Traps/spike_trap.gd" id="1_urvpr"]
 [ext_resource type="Texture2D" uid="uid://c3ya8d4ma5yq1" path="res://assets/Traps/Spikes/4 Conjoined Spikes.png" id="2_fw5sk"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_x6cko"]

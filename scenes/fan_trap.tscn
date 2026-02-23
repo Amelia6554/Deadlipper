@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://b84avw5tiifw3"]
 
-[ext_resource type="Script" uid="uid://boi6m53plgtf3" path="res://scripts/fan_trap.gd" id="1_u86em"]
+[ext_resource type="Script" uid="uid://boi6m53plgtf3" path="res://scripts/Traps/fan_trap.gd" id="1_u86em"]
 [ext_resource type="Texture2D" uid="uid://ce1f40wnvk3tk" path="res://assets/3 Objects/Boxes/3.png" id="2_k3fm3"]
 
 [sub_resource type="Gradient" id="Gradient_u86em"]

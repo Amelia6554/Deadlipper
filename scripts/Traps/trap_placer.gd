@@ -3,6 +3,7 @@ extends Node2D
 @export var player_money: int = 10000
 @onready var preview_sprite: Sprite2D = $PreviewSprite
 @export var money_label: Label
+@export var hammer_icon: Texture2D
 
 #---traps-------------------------------
 @export var spikes_scene: PackedScene
@@ -12,12 +13,27 @@ extends Node2D
 # Zmienna przechowująca scenę aktualnie wybranej pułapki
 var selected_trap_scene: PackedScene = null
 
-var can_place_traps: bool = true
+#setup
 var place_margin = 50
+var colorRed = Color(1, 0, 0, 0.5)
+
+#states
+var can_place_traps: bool = true
+var is_destroy_mode: bool = false
+var highlighted_trap: Trap = null
+
+func select_destroy_tool():
+	is_destroy_mode = true
+	selected_trap_scene = null
+	if hammer_icon:
+		preview_sprite.texture = hammer_icon
+		preview_sprite.scale = Vector2(1, 1) # Reset skali, by młotek nie był gigantyczny
+		preview_sprite.modulate = Color(1, 1, 1, 0.8) # Prawie pełna widoczność
+		preview_sprite.visible = true
+	print("Tryb usuwania aktywny")
 
 func _process(_delta):
-	# Jeśli nie mamy wybranej pułapki lub gra wystartowała - chowamy podgląd
-	if not can_place_traps or selected_trap_scene == null:
+	if not can_place_traps or (selected_trap_scene == null and not is_destroy_mode):
 		preview_sprite.visible = false
 		return
 
@@ -34,38 +50,84 @@ func update_money_display():
 func update_preview():
 	preview_sprite.visible = true
 	var mouse_pos = get_global_mouse_position()
-	var result = get_surface_at_mouse(mouse_pos)
-	
-	if result:
-		# Ustawiamy pozycję i rotację podglądu
-		preview_sprite.global_position = result.position
-		preview_sprite.rotation = result.normal.angle() + (PI / 2.0)
-		
-		# Sprawdzamy, czy nas stać - jeśli nie, podświetlamy na czerwono
-		var trap_cost = get_trap_cost(selected_trap_scene)
-	
-		if player_money >= trap_cost:
-			preview_sprite.modulate = Color(1, 1, 1, 0.5)
-		else:
-			preview_sprite.modulate = Color(1, 0, 0, 0.5)
-	else:
-		# Jeśli myszka jest w powietrzu
+	if is_destroy_mode:
+		# Młotek po prostu podąża za myszką
 		preview_sprite.global_position = mouse_pos
 		preview_sprite.rotation = 0
-		preview_sprite.modulate = Color(1, 0, 0, 0.5) # Czerwony (nie można tu budować)
+		
+		var current_trap = get_trap_under_mouse()
+		
+		if current_trap != highlighted_trap:
+			# Przywróć kolor poprzedniej (jeśli była)
+			if highlighted_trap != null:
+				highlighted_trap.modulate = Color(1, 1, 1) 
+			
+			# Podświetl nową
+			highlighted_trap = current_trap
+			if highlighted_trap != null:
+				highlighted_trap.modulate = colorRed # Czerwony
+	else:
+		if highlighted_trap != null:
+			highlighted_trap.modulate = Color(1, 1, 1)
+			highlighted_trap = null
+		var result = get_surface_at_mouse(mouse_pos)
+
+		if result:
+			# Ustawiamy pozycję i rotację podglądu
+			preview_sprite.global_position = result.position
+			preview_sprite.rotation = result.normal.angle() + (PI / 2.0)
+			
+			# Sprawdzamy, czy nas stać - jeśli nie, podświetlamy na czerwono
+			var trap_cost = get_trap_cost(selected_trap_scene)
+		
+			if player_money >= trap_cost:
+				preview_sprite.modulate = Color(1, 1, 1, 0.5)
+			else:
+				preview_sprite.modulate = colorRed
+		else:
+			# Jeśli myszka jest w powietrzu
+			preview_sprite.global_position = mouse_pos
+			preview_sprite.rotation = 0
+			preview_sprite.modulate = colorRed# Czerwony (nie można tu budować)
 		
 func get_trap_cost(scene: PackedScene) -> int:
 	var state = scene.get_state()
 	for i in state.get_node_property_count(0):
 		if state.get_node_property_name(0, i) == "cost":
 			return state.get_node_property_value(0, i)
-	return 0 # Domyślnie 0 jeśli nie znaleziono
+	return 0 
+
+func get_trap_under_mouse() -> Trap:
+	var space_state = get_world_2d().direct_space_state
+	var query = PhysicsPointQueryParameters2D.new()
+	query.position = get_global_mouse_position()
+	query.collide_with_areas = true
+	var results = space_state.intersect_point(query)
+	
+	for res in results:
+		if res.collider is Trap:
+			return res.collider
+	return null
+
+func is_hovering_trap() -> bool:
+	var space_state = get_world_2d().direct_space_state
+	var query = PhysicsPointQueryParameters2D.new()
+	query.position = get_global_mouse_position()
+	query.collide_with_areas = true
+	var results = space_state.intersect_point(query)
+	
+	for res in results:
+		if res.collider is Trap:
+			return true
+	return false
 
 func _unhandled_input(event):
-	if can_place_traps == false:
+	if not can_place_traps:
 		return
 	# Sprawdzamy, czy gracz kliknął lewym przyciskiem myszy na mapie
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+		if is_destroy_mode:
+			destroy_trap_at_mouse()
 		if selected_trap_scene != null:
 			place_trap(get_global_mouse_position())
 
@@ -152,6 +214,17 @@ func place_trap(click_position: Vector2):
 func _on_btn_spikes_pressed() -> void:
 	pass # Replace with function body.
 	
+func destroy_trap_at_mouse():
+	var trap_to_remove = get_trap_under_mouse()
+	
+	if trap_to_remove != null:
+		player_money += int(trap_to_remove.cost)
+		update_money_display()
+		
+		highlighted_trap = null
+		trap_to_remove.queue_free()
+		print("Usunięto pułapkę")
+	
 #------------------Traps--------------------
 
 func select_spikes():
@@ -164,6 +237,7 @@ func select_fan():
 	_set_selected_trap(fan_scene, "Wiatrak")
 
 func _set_selected_trap(new_scene: PackedScene, trap_label: String):
+	is_destroy_mode = false
 	if not can_place_traps: return
 	
 	selected_trap_scene = new_scene

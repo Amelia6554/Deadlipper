@@ -24,6 +24,7 @@ animations = [{
 radius = 6.0
 
 [node name="Player" type="RigidBody2D" unique_id=1668177995]
+z_index = 1
 physics_material_override = SubResource("PhysicsMaterial_3vyb7")
 continuous_cd = 1
 script = ExtResource("1_g2els")

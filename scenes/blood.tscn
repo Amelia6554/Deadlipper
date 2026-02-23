@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dradyiimmto7y"]
 
 [ext_resource type="Texture2D" uid="uid://bllv33xb7mlp5" path="res://assets/bloodfx001_01.png" id="1_uli77"]
-[ext_resource type="Script" uid="uid://dv10xm23a033b" path="res://scripts/blood.gd" id="2_2klaf"]
+[ext_resource type="Script" uid="uid://dv10xm23a033b" path="res://scripts/Ui/blood.gd" id="2_2klaf"]
 
 [sub_resource type="Curve" id="Curve_uli77"]
 _limits = [-1.0, 1.0, 0.0, 1.0]

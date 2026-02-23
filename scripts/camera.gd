@@ -4,7 +4,7 @@ extends Camera2D
 @export var look_ahead_distance: float = 0.2 # Jak bardzo wyprzedzać (ułamek sekundy)
 @export var max_look_ahead: float = 300.0    # Maksymalne wychylenie w pikselach
 @export var vertical_only_follow: bool = true
-var margin_percent: float = 1.0 / 15.0 # Twój margines 1/15
+var margin_percent: float = 1.0 / 15.0 # margines 1/15
 
 var target: RigidBody2D = null
 var follow: bool = false
