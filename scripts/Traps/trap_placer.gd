@@ -9,6 +9,7 @@ extends Node2D
 @export var spikes_scene: PackedScene
 @export var trampoline_scene: PackedScene
 @export var fan_scene: PackedScene
+@export var turret_scene: PackedScene
 
 # Zmienna przechowująca scenę aktualnie wybranej pułapki
 var selected_trap_scene: PackedScene = null
@@ -235,6 +236,9 @@ func select_trampoline():
 	
 func select_fan():
 	_set_selected_trap(fan_scene, "Wiatrak")
+	
+func select_turret() -> void:
+	_set_selected_trap(turret_scene, "Działko")
 
 func _set_selected_trap(new_scene: PackedScene, trap_label: String):
 	is_destroy_mode = false
@@ -244,10 +248,24 @@ func _set_selected_trap(new_scene: PackedScene, trap_label: String):
 	print("Wybrano: ", trap_label)
 	
 	var temp_instance = selected_trap_scene.instantiate()
-	var sprite = temp_instance.get_node("Sprite2D") as Sprite2D
+	var sprite: Node2D = null
+	
+	for child in temp_instance.get_children():
+		if child is Sprite2D or child is AnimatedSprite2D:
+			sprite = child
+			break
 	
 	if sprite:
-		preview_sprite.texture = sprite.texture
+		# 1. Sprawdzamy, z jakim typem grafiki mamy do czynienia
+		if sprite is Sprite2D:
+			preview_sprite.texture = sprite.texture
+		elif sprite is AnimatedSprite2D:
+			# Wyciągamy pierwszą klatkę (indeks 0) z domyślnej animacji
+			if sprite.sprite_frames != null:
+				var current_anim = sprite.animation
+				preview_sprite.texture = sprite.sprite_frames.get_frame_texture(current_anim, 0)
+		
+		# 2. Reszta właściwości jest wspólna dla obu typów
 		preview_sprite.offset = sprite.offset
 		preview_sprite.scale = sprite.scale
 		preview_sprite.centered = sprite.centered

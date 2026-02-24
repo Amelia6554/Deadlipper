@@ -1,0 +1,101 @@
+[gd_scene format=3 uid="uid://cx7d386v6v3cu"]
+
+[ext_resource type="Script" uid="uid://bo2arymm6begp" path="res://scripts/Traps/turret_trap.gd" id="1_mulsu"]
+[ext_resource type="PackedScene" uid="uid://clfe4q4aubqo2" path="res://scenes/bullet.tscn" id="2_3mkog"]
+[ext_resource type="Texture2D" uid="uid://de0b4cbadhmbp" path="res://assets/Traps/Turret/turret_FACE.png" id="2_mulsu"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3mkog"]
+atlas = ExtResource("2_mulsu")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_00pnf"]
+atlas = ExtResource("2_mulsu")
+region = Rect2(0, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f0m7u"]
+atlas = ExtResource("2_mulsu")
+region = Rect2(0, 64, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oqxmh"]
+atlas = ExtResource("2_mulsu")
+region = Rect2(0, 96, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vvd4u"]
+atlas = ExtResource("2_mulsu")
+region = Rect2(0, 128, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6hn0s"]
+atlas = ExtResource("2_mulsu")
+region = Rect2(0, 160, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bsvld"]
+atlas = ExtResource("2_mulsu")
+region = Rect2(0, 192, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8vj8x"]
+atlas = ExtResource("2_mulsu")
+region = Rect2(0, 224, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8ammh"]
+atlas = ExtResource("2_mulsu")
+region = Rect2(0, 256, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l5dex"]
+atlas = ExtResource("2_mulsu")
+region = Rect2(0, 288, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_x5ywe"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3mkog")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_00pnf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f0m7u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_oqxmh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vvd4u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6hn0s")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bsvld")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8vj8x")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8ammh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l5dex")
+}],
+"loop": false,
+"name": &"shoot",
+"speed": 20.0
+}]
+
+[node name="Turret" type="Area2D" unique_id=1520767637]
+script = ExtResource("1_mulsu")
+BULLET = ExtResource("2_3mkog")
+
+[node name="TurretSprite" type="AnimatedSprite2D" parent="." unique_id=1759323528]
+sprite_frames = SubResource("SpriteFrames_x5ywe")
+animation = &"shoot"
+
+[node name="RayCast2D" type="RayCast2D" parent="." unique_id=1780500554]
+target_position = Vector2(200, 0)
+
+[node name="ReloadTimer" type="Timer" parent="RayCast2D" unique_id=86371776]
+wait_time = 0.5
+one_shot = true
+
+[connection signal="frame_changed" from="TurretSprite" to="." method="_on_turret_sprite_frame_changed"]
+[connection signal="timeout" from="RayCast2D/ReloadTimer" to="." method="_on_reload_timer_timeout"]

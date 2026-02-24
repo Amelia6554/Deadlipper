@@ -36,7 +36,7 @@ func _on_shop_phase():
 	delete_player()
 	camera.follow_mouse()
 	trap_placer.deactivate_traps()
-	clear_all_blood()
+	clear_map_debris()
 
 func _on_destruction_phase():
 	trap_placer.select_destroy_tool()
@@ -98,14 +98,19 @@ func delete_player():
 		player.queue_free()
 		player = null
 
-func clear_all_blood():
+func clear_map_debris():
 	if get_tree() == null:
 		print("Brak drzewa!")
 		return
-		
+
 	var blood_effects = get_tree().get_nodes_in_group("blood")
-	print("Znaleziono ", blood_effects.size(), " efektów krwi")
-	
+	print("Znaleziono ", blood_effects.size(), " efektów krwi do usunięcia.")
 	for blood in blood_effects:
 		if is_instance_valid(blood):
 			blood.queue_free()
+			
+	var bullets = get_tree().get_nodes_in_group("bullets")
+	print("Znaleziono ", bullets.size(), " pocisków do usunięcia.")
+	for bullet in bullets:
+		if is_instance_valid(bullet):
+			bullet.queue_free()

@@ -14,6 +14,7 @@
 [ext_resource type="Script" uid="uid://vygo772copoe" path="res://scripts/Ui/gui.gd" id="12_8ye2v"]
 [ext_resource type="Texture2D" uid="uid://xlvyrqromoc6" path="res://assets/sprites.png" id="13_jn7p6"]
 [ext_resource type="PackedScene" uid="uid://co12uak0fy7q3" path="res://scenes/pause_menu.tscn" id="14_bii51"]
+[ext_resource type="PackedScene" uid="uid://cx7d386v6v3cu" path="res://scenes/turret_trap.tscn" id="15_nq7p0"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_lbhrr"]
 texture = ExtResource("3_idb2n")
@@ -504,6 +505,7 @@ hammer_icon = ExtResource("6_n5ia1")
 spikes_scene = ExtResource("7_uetwr")
 trampoline_scene = ExtResource("8_8q2kd")
 fan_scene = ExtResource("9_5liog")
+turret_scene = ExtResource("15_nq7p0")
 
 [node name="PreviewSprite" type="Sprite2D" parent="TrapPlacer" unique_id=1977265922]
 visible = false
@@ -602,6 +604,14 @@ offset_right = 256.0
 offset_bottom = 451.0
 text = "Wiatrak - $150"
 
+[node name="BtnTurret" type="Button" parent="GUI/Shop/ShopPanel" unique_id=1923520947]
+layout_mode = 0
+offset_left = 118.0
+offset_top = 478.0
+offset_right = 243.0
+offset_bottom = 555.0
+text = "Działko - $200"
+
 [node name="BtnDelete" type="Button" parent="GUI/Shop/ShopPanel" unique_id=597771116]
 layout_mode = 0
 offset_left = 72.0
@@ -643,9 +653,13 @@ offset_bottom = 48.0
 [node name="PauseMenu" parent="GUI/Controls" unique_id=914931070 instance=ExtResource("14_bii51")]
 visible = false
 
+[node name="Turret" parent="." unique_id=1811175246 instance=ExtResource("15_nq7p0")]
+position = Vector2(-30, 0)
+
 [connection signal="body_entered" from="EndLevel" to="EndLevel" method="_on_body_entered"]
 [connection signal="pressed" from="GUI/Shop/ShopPanel/BtnSpikes" to="TrapPlacer" method="select_spikes"]
 [connection signal="pressed" from="GUI/Shop/ShopPanel/BtnTrampoline" to="TrapPlacer" method="select_trampoline"]
 [connection signal="pressed" from="GUI/Shop/ShopPanel/BtnFan" to="TrapPlacer" method="select_fan"]
+[connection signal="pressed" from="GUI/Shop/ShopPanel/BtnTurret" to="TrapPlacer" method="select_turret"]
 [connection signal="pressed" from="GUI/Shop/ShopPanel/BtnDelete" to="GUI" method="_on_destruction_pressed"]
 [connection signal="pressed" from="GUI/PlayerStats/BtnRestart" to="GUI" method="_on_restart_player_pressed"]

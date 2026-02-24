@@ -8,6 +8,7 @@ var score = 0
 var is_processing_damage = false
 
 func _ready():
+	add_to_group("Player")
 	gravity_scale = 0   # brak grawitacji na start
 	deactivatePlayer()
 	GameState.level_run_phase_signal.connect(activatePlayer)

@@ -1,5 +1,5 @@
 extends Area2D
-class_name Trap # To sprawi, że Godot rozpozna "Trap" jako nowy typ węzła!
+class_name Trap
 
 # Wspólne zmienne dla KAŻDEJ pułapki
 @export var trap_name: String = "Nieznana Pułapka"
