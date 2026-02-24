@@ -8,6 +8,7 @@ func _ready():
 	pause_menu.hide()
 
 func _on_pause_toggled(is_paused):
+	$MarginContainer/VBoxContainer/BtnResume.grab_focus()
 	if is_paused:
 		pause_menu.show()
 	else:
@@ -24,4 +25,4 @@ func _on_restart_pressed() -> void:
 
 
 func _on_menu_pressed() -> void:
-	pass # Replace with function body.
+	get_tree().change_scene_to_file("res://scenes/main_menu.tscn")

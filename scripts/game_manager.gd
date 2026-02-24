@@ -99,7 +99,7 @@ func delete_player():
 		player = null
 
 func clear_all_blood():
-	if not get_tree():
+	if get_tree() == null:
 		print("Brak drzewa!")
 		return
 		

@@ -11,15 +11,12 @@ var end_of_level_y: float = 5000.0
 var start_y: float = 0.0
 
 func _ready():
+	btn_start.grab_focus()
 	btn_start.pressed.connect(_on_start_pressed)
 	GameState.level_shop_phase_signal.connect(_on_shop_phase)
-	
 
-	
 func _on_shop_phase():
 	btn_start.show()
-	
-
 
 func setup_player(new_player: Node2D) -> void:
 	player = new_player

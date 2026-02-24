@@ -1,0 +1,106 @@
+[gd_scene format=3 uid="uid://1gv0h54dg8c4"]
+
+[ext_resource type="Script" uid="uid://depx73b4o57bc" path="res://scripts/Ui/main_menu.gd" id="1_l6cm7"]
+[ext_resource type="Texture2D" uid="uid://dsyycfd8y32us" path="res://assets/Slime Idle.png" id="2_ekxnf"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_ekxnf"]
+font_size = 90
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bqqt6"]
+atlas = ExtResource("2_ekxnf")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wu84c"]
+atlas = ExtResource("2_ekxnf")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8ln24"]
+atlas = ExtResource("2_ekxnf")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rtw2f"]
+atlas = ExtResource("2_ekxnf")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_oa1go"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bqqt6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wu84c")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8ln24")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rtw2f")
+}],
+"loop": true,
+"name": &"default",
+"speed": 7.0
+}]
+
+[node name="MainMenu" type="Control" unique_id=1841088423]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_l6cm7")
+
+[node name="NameLabel" type="Label" parent="." unique_id=1660213373]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -239.5
+offset_top = -62.0
+offset_right = 239.5
+offset_bottom = 62.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Deadlipper"
+label_settings = SubResource("LabelSettings_ekxnf")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=728803241]
+position = Vector2(961, 746)
+scale = Vector2(12.000004, 12.000004)
+sprite_frames = SubResource("SpriteFrames_oa1go")
+autoplay = "default"
+frame_progress = 0.9939386
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1118297453]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -117.0
+offset_top = -204.66089
+offset_right = 117.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="BtnPlay" type="Button" parent="VBoxContainer" unique_id=1726187798]
+layout_mode = 2
+focus_neighbor_top = NodePath("../BtnQuit")
+text = "Zagraj"
+
+[node name="BtnOption" type="Button" parent="VBoxContainer" unique_id=1250300800]
+layout_mode = 2
+text = "Opcje"
+
+[node name="BtnQuit" type="Button" parent="VBoxContainer" unique_id=1013359783]
+layout_mode = 2
+focus_neighbor_bottom = NodePath("../BtnPlay")
+text = "Zamknij"
+
+[connection signal="pressed" from="VBoxContainer/BtnPlay" to="." method="_on_btn_play_pressed"]
+[connection signal="pressed" from="VBoxContainer/BtnOption" to="." method="_on_btn_option_pressed"]
+[connection signal="pressed" from="VBoxContainer/BtnQuit" to="." method="_on_btn_quit_pressed"]
