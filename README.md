@@ -9,3 +9,9 @@ Deadlipper is a chaotic game where you drop a ball down a falling map full of tr
 * Place traps on a map that constantly moves downward.
 * Drop the ball and maximize the damage it takes.
 * Activate traps in real-time while the ball is falling.
+
+### Ideas
+* Hydraulic press
+* Blades
+* Anti-Gravity Zone
+* Cannon
