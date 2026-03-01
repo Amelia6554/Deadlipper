@@ -87,10 +87,12 @@ script = ExtResource("1_mulsu")
 BULLET = ExtResource("2_3mkog")
 
 [node name="TurretSprite" type="AnimatedSprite2D" parent="." unique_id=1759323528]
+rotation = -1.5707964
 sprite_frames = SubResource("SpriteFrames_x5ywe")
 animation = &"shoot"
 
 [node name="RayCast2D" type="RayCast2D" parent="." unique_id=1780500554]
+rotation = -1.5707964
 target_position = Vector2(200, 0)
 
 [node name="ReloadTimer" type="Timer" parent="RayCast2D" unique_id=86371776]

@@ -23,7 +23,7 @@ func _physics_process(delta: float) -> void:
 		rayCast.global_rotation = angle_to_target
 
 		if rayCast.is_colliding() and rayCast.get_collider().is_in_group("Player"):
-			turret_sprite.rotation = angle_to_target
+			turret_sprite.rotation = angle_to_target 
 			
 			if reloadTimer.is_stopped():
 				turret_sprite.play("shoot") 
