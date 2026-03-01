@@ -1,8 +1,26 @@
-# Godot
-.export/
+# Pliki generowane automatycznie (cache i dane lokalne)
+.godot/
 .import/
+
+# Konkretne pliki importu (metadane)
 *.import
-*.mono/
-*.godot*
-*.tmp
+
+# Pliki binarne eksportu
+*.exe
+*.zip
+*.apk
+*.ipa
+*.dmg
+*.res
+*.tres
+
+# Mono/C# (jeśli używasz wersji .NET)
+.mono/
+bin/
+obj/
+*.csproj
+*.sln
+
+# Logi i pliki tymczasowe
 *.log
+*.tmp
