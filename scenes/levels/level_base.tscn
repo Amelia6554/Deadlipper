@@ -1,23 +1,23 @@
 [gd_scene format=3 uid="uid://ci4e270s3iytp"]
 
-[ext_resource type="Script" uid="uid://cybcx3qijhjyb" path="res://scripts/game_manager.gd" id="1_xhhpe"]
-[ext_resource type="PackedScene" uid="uid://b67f2eondq68c" path="res://scenes/player.tscn" id="2_nq7p0"]
-[ext_resource type="Texture2D" uid="uid://k55aghn6cwtv" path="res://assets/1 Tiles/Tileset.png" id="3_idb2n"]
-[ext_resource type="Script" uid="uid://c72r2ymrflkqj" path="res://scripts/camera.gd" id="4_ufp5x"]
-[ext_resource type="Script" uid="uid://dyu5bcabycv6w" path="res://scripts/Traps/trap_placer.gd" id="5_3xdni"]
-[ext_resource type="Texture2D" uid="uid://lrkmh7lbqg7q" path="res://assets/UI/01.png" id="6_n5ia1"]
-[ext_resource type="PackedScene" uid="uid://x3vol8ms7cv" path="res://scenes/spike_trap.tscn" id="7_uetwr"]
-[ext_resource type="PackedScene" uid="uid://dco1im4p70g0l" path="res://scenes/trampoline_trap.tscn" id="8_8q2kd"]
-[ext_resource type="PackedScene" uid="uid://b84avw5tiifw3" path="res://scenes/fan_trap.tscn" id="9_5liog"]
-[ext_resource type="Script" uid="uid://bej6g343lab5d" path="res://scripts/end_level.gd" id="10_lyv6i"]
-[ext_resource type="Texture2D" uid="uid://bd6fwhjfm0xeb" path="res://assets/3 Objects/Stones/1.png" id="11_wydeh"]
-[ext_resource type="Script" uid="uid://vygo772copoe" path="res://scripts/Ui/gui.gd" id="12_8ye2v"]
-[ext_resource type="Texture2D" uid="uid://xlvyrqromoc6" path="res://assets/sprites.png" id="13_jn7p6"]
-[ext_resource type="PackedScene" uid="uid://co12uak0fy7q3" path="res://scenes/pause_menu.tscn" id="14_bii51"]
-[ext_resource type="PackedScene" uid="uid://cx7d386v6v3cu" path="res://scenes/turret_trap.tscn" id="15_nq7p0"]
+[ext_resource type="Script" uid="uid://cybcx3qijhjyb" path="res://scripts/game_manager.gd" id="1_p3uqr"]
+[ext_resource type="PackedScene" uid="uid://b67f2eondq68c" path="res://scenes/player.tscn" id="2_vqsrt"]
+[ext_resource type="Texture2D" uid="uid://k55aghn6cwtv" path="res://assets/1 Tiles/Tileset.png" id="3_nd8jy"]
+[ext_resource type="Script" uid="uid://c72r2ymrflkqj" path="res://scripts/camera.gd" id="4_vx33d"]
+[ext_resource type="Script" uid="uid://dyu5bcabycv6w" path="res://scripts/Traps/trap_placer.gd" id="5_gqlf2"]
+[ext_resource type="Texture2D" uid="uid://lrkmh7lbqg7q" path="res://assets/UI/01.png" id="6_ar7sc"]
+[ext_resource type="PackedScene" uid="uid://x3vol8ms7cv" path="res://scenes/spike_trap.tscn" id="7_pg5tx"]
+[ext_resource type="PackedScene" uid="uid://dco1im4p70g0l" path="res://scenes/trampoline_trap.tscn" id="8_8uay4"]
+[ext_resource type="PackedScene" uid="uid://b84avw5tiifw3" path="res://scenes/fan_trap.tscn" id="9_pq3yy"]
+[ext_resource type="PackedScene" uid="uid://cx7d386v6v3cu" path="res://scenes/turret_trap.tscn" id="10_eekcx"]
+[ext_resource type="Script" uid="uid://bej6g343lab5d" path="res://scripts/end_level.gd" id="11_tyll4"]
+[ext_resource type="Texture2D" uid="uid://bd6fwhjfm0xeb" path="res://assets/3 Objects/Stones/1.png" id="12_hitd5"]
+[ext_resource type="Script" uid="uid://vygo772copoe" path="res://scripts/Ui/gui.gd" id="13_or1vv"]
+[ext_resource type="Texture2D" uid="uid://xlvyrqromoc6" path="res://assets/sprites.png" id="14_vcbhb"]
+[ext_resource type="PackedScene" uid="uid://co12uak0fy7q3" path="res://scenes/pause_menu.tscn" id="15_6ciss"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_lbhrr"]
-texture = ExtResource("3_idb2n")
+texture = ExtResource("3_nd8jy")
 0:0/0 = 0
 0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 1:0/0 = 0
@@ -477,8 +477,8 @@ size = Vector2(64, 44)
 [node name="Game" type="Node2D" unique_id=1794976764]
 
 [node name="GameManager" type="Node" parent="." unique_id=474744127 node_paths=PackedStringArray("spawn_point", "trap_placer", "trap_ui_panel", "camera", "level_ui")]
-script = ExtResource("1_xhhpe")
-player_scene = ExtResource("2_nq7p0")
+script = ExtResource("1_p3uqr")
+player_scene = ExtResource("2_vqsrt")
 spawn_point = NodePath("../SpawnPoint")
 trap_placer = NodePath("../TrapPlacer")
 trap_ui_panel = NodePath("../GUI/Shop/ShopPanel")
@@ -496,16 +496,16 @@ limit_enabled = false
 limit_left = 0
 limit_right = 0
 position_smoothing_enabled = true
-script = ExtResource("4_ufp5x")
+script = ExtResource("4_vx33d")
 
 [node name="TrapPlacer" type="Node2D" parent="." unique_id=1393012954 node_paths=PackedStringArray("money_label")]
-script = ExtResource("5_3xdni")
+script = ExtResource("5_gqlf2")
 money_label = NodePath("../GUI/Shop/ShopPanel/MoneyLabel")
-hammer_icon = ExtResource("6_n5ia1")
-spikes_scene = ExtResource("7_uetwr")
-trampoline_scene = ExtResource("8_8q2kd")
-fan_scene = ExtResource("9_5liog")
-turret_scene = ExtResource("15_nq7p0")
+hammer_icon = ExtResource("6_ar7sc")
+spikes_scene = ExtResource("7_pg5tx")
+trampoline_scene = ExtResource("8_8uay4")
+fan_scene = ExtResource("9_pq3yy")
+turret_scene = ExtResource("10_eekcx")
 
 [node name="PreviewSprite" type="Sprite2D" parent="TrapPlacer" unique_id=1977265922]
 visible = false
@@ -518,17 +518,17 @@ position = Vector2(0, -151)
 
 [node name="EndLevel" type="Area2D" parent="." unique_id=1446884994]
 position = Vector2(269, 953)
-script = ExtResource("10_lyv6i")
+script = ExtResource("11_tyll4")
 
 [node name="Sprite2D" type="Sprite2D" parent="EndLevel" unique_id=987055127]
 position = Vector2(0, -7)
-texture = ExtResource("11_wydeh")
+texture = ExtResource("12_hitd5")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="EndLevel" unique_id=1742017033]
 shape = SubResource("RectangleShape2D_kvuet")
 
 [node name="GUI" type="CanvasLayer" parent="." unique_id=756802512 node_paths=PackedStringArray("progress_bar", "score_label", "btn_start", "end_level_area")]
-script = ExtResource("12_8ye2v")
+script = ExtResource("13_or1vv")
 progress_bar = NodePath("Progress/ProgressBar")
 score_label = NodePath("PlayerStats/Score")
 btn_start = NodePath("Shop/ShopPanel/BtnStart")
@@ -541,7 +541,7 @@ visible = false
 position = Vector2(93.50001, 507.3743)
 rotation = 1.5707964
 scale = Vector2(3.6074004, 1)
-texture = ExtResource("13_jn7p6")
+texture = ExtResource("14_vcbhb")
 region_enabled = true
 region_rect = Rect2(623, 83, 275, 55)
 
@@ -561,7 +561,7 @@ show_percentage = false
 visible = false
 position = Vector2(1598, 539.5)
 scale = Vector2(1.0223643, 3.6735396)
-texture = ExtResource("13_jn7p6")
+texture = ExtResource("14_vcbhb")
 region_enabled = true
 region_rect = Rect2(0, 155, 626, 291)
 
@@ -650,11 +650,8 @@ offset_bottom = 48.0
 
 [node name="Controls" type="Node" parent="GUI" unique_id=592985146]
 
-[node name="PauseMenu" parent="GUI/Controls" unique_id=914931070 instance=ExtResource("14_bii51")]
+[node name="PauseMenu" parent="GUI/Controls" unique_id=914931070 instance=ExtResource("15_6ciss")]
 visible = false
-
-[node name="Turret" parent="." unique_id=1811175246 instance=ExtResource("15_nq7p0")]
-position = Vector2(-30, 0)
 
 [connection signal="body_entered" from="EndLevel" to="EndLevel" method="_on_body_entered"]
 [connection signal="pressed" from="GUI/Shop/ShopPanel/BtnSpikes" to="TrapPlacer" method="select_spikes"]

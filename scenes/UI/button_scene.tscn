@@ -2,6 +2,8 @@
 
 [ext_resource type="Texture2D" uid="uid://blpjygsqnl12i" path="res://assets/UI/atlas_texture.tres" id="1_qn676"]
 [ext_resource type="Texture2D" uid="uid://bowsqaqeh5utf" path="res://assets/UI/buttons/Red_Buttons_Pixel.png" id="2_pu7wl"]
+[ext_resource type="Script" uid="uid://j5h47puiwynt" path="res://scripts/button.gd" id="3_pu7wl"]
+[ext_resource type="FontFile" uid="uid://pvdbpwd04y77" path="res://assets/Font/PixelPurl.ttf" id="4_32ese"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_32ese"]
 atlas = ExtResource("2_pu7wl")
@@ -9,22 +11,36 @@ region = Rect2(144, 48, 16, 16)
 
 [node name="TextureButton" type="TextureButton" unique_id=1675564261]
 custom_minimum_size = Vector2(10, 10)
-offset_right = 16.0
-offset_bottom = 16.0
+offset_right = 160.0
+offset_bottom = 160.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+disabled = true
 texture_normal = ExtResource("1_qn676")
 texture_disabled = SubResource("AtlasTexture_32ese")
-stretch_mode = 3
+stretch_mode = 5
+script = ExtResource("3_pu7wl")
 
 [node name="Label" type="Label" parent="." unique_id=2055478106]
+visible = false
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -2.5
+offset_top = -9.0
+offset_right = 2.5
+offset_bottom = 9.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_outline_color = Color(0.4509804, 0.09019608, 0.1764706, 1)
-theme_override_constants/outline_size = 3
-theme_override_font_sizes/font_size = 7
+theme_override_constants/outline_size = 16
+theme_override_fonts/font = ExtResource("4_32ese")
+theme_override_font_sizes/font_size = 140
 text = "1"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[connection signal="pressed" from="." to="." method="_on_pressed"]

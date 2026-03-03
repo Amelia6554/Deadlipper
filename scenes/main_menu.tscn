@@ -1,10 +1,14 @@
 [gd_scene format=3 uid="uid://1gv0h54dg8c4"]
 
 [ext_resource type="Script" uid="uid://depx73b4o57bc" path="res://scripts/Ui/main_menu.gd" id="1_l6cm7"]
+[ext_resource type="Texture2D" uid="uid://bf2wjmj3kh0rd" path="res://assets/2 Background/Background.png" id="2_8ln24"]
 [ext_resource type="Texture2D" uid="uid://dsyycfd8y32us" path="res://assets/Slime Idle.png" id="2_ekxnf"]
+[ext_resource type="FontFile" uid="uid://pvdbpwd04y77" path="res://assets/Font/PixelPurl.ttf" id="3_rtw2f"]
+[ext_resource type="Texture2D" uid="uid://co2mmnxo12ldq" path="res://assets/2 Background/Layers/1.png" id="5_oa1go"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_ekxnf"]
-font_size = 90
+font = ExtResource("3_rtw2f")
+font_size = 200
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_bqqt6"]
 atlas = ExtResource("2_ekxnf")
@@ -51,6 +55,15 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_l6cm7")
 
+[node name="TextureRect" type="TextureRect" parent="." unique_id=432716176]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_8ln24")
+
 [node name="NameLabel" type="Label" parent="." unique_id=1660213373]
 layout_mode = 1
 anchors_preset = 8
@@ -58,14 +71,16 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -239.5
-offset_top = -62.0
-offset_right = 239.5
-offset_bottom = 62.0
+offset_left = -337.5
+offset_top = -86.0
+offset_right = 337.5
+offset_bottom = 86.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "Deadlipper"
 label_settings = SubResource("LabelSettings_ekxnf")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=728803241]
 position = Vector2(961, 746)
@@ -73,6 +88,22 @@ scale = Vector2(12.000004, 12.000004)
 sprite_frames = SubResource("SpriteFrames_oa1go")
 autoplay = "default"
 frame_progress = 0.9939386
+
+[node name="TextureRect2" type="TextureRect" parent="." unique_id=1635686144]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -137.0
+offset_top = -217.0
+offset_right = 135.0
+offset_bottom = -86.0
+grow_horizontal = 2
+grow_vertical = 0
+texture = ExtResource("5_oa1go")
+expand_mode = 1
 
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1118297453]
 layout_mode = 1

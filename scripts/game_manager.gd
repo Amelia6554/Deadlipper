@@ -91,7 +91,8 @@ func _on_level_finished():
 		player.queue_free()
 		print("Kulka zniknęła!")
 	
-	GameState._shop_phase()
+	get_tree().change_scene_to_file("res://scenes/ui/level_select.tscn")
+	#GameState._shop_phase()
 
 func delete_player():
 	if is_instance_valid(player):
